@@ -1,0 +1,112 @@
+/* CSS designed by  Christopher Suitor, Nana Nimako, Ben Sylvester
+ * 
+ * Nana and Ben, when you guys work on CSS, I want you to organize it into
+ * two categories. If you are doing general CSS, that will apply to multiple
+ * pages. I want you to put it into the GENERAL section. If you are making
+ * page specific CSS, I want you to use comments to create a section indicating
+ * the page that the CSS applies to. If you begin to use complex CSS, please
+ * write comments.
+ *
+ */
+/*****************     Begen GENERAL Section             ************************/
+body{
+    font: 14pt Arial,Helvetica,sans-serif;
+    max-width: 42em;
+    margin: auto;
+    padding: 0px 8px 0px 10px;
+    width: 90%;
+    background-color: white;
+    border: 2px solid #6A767B;
+}
+/*****************     End GENERAL Section             ************************/
+
+/*****************     Begin NAV         *****************************/
+nav ol {
+    padding-left: 0;
+}     
+
+nav ol li{
+    display: inline-block;
+    list-style-type: none;
+    padding-right: 3em;
+}
+/*****************     End NAV         *****************************/
+
+/*****************     Begin FOOTER              ****************************/
+footer{
+    clear: both;
+}
+/*****************     End FOOTER              ****************************/
+
+/*****************     Begin FORM                ****************************/     
+fieldset{
+    border: 2px solid #00498e;
+    clear: both;
+    margin-top: 2em;
+    padding: 1em;
+}
+
+label {
+    color: #005cb3;
+    display: block;
+    font-weight: bold;
+    padding-right: 1em;
+}
+
+input,
+textarea,
+select{
+    box-sizing: border-box;
+    border: 2px solid #C2C2C2;
+    box-shadow: 2px 2px 4px #EBEBEB; 
+    border-radius: 3px;
+    padding: 1em;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+    border: 1px solid #0C0;
+}     
+
+input[type=submit]{
+    background: #005cb3 none repeat scroll 0 0;
+    border: medium none;
+    border-radius: 3px;
+    box-shadow: 1px 1px 4px #dadada;
+    color: #fff;
+    width: 100%;
+}
+
+.buttons legend{
+    display: none;
+}
+
+.buttons{
+    text-align: center;
+}
+
+.form-heading {
+    border-bottom: 2px solid #ddd;
+    font-size: 1.25em;
+    font-style: italic;
+    font-weight: bold;
+    margin-bottom: 1.75em;
+    padding-bottom: 0.4em;
+}
+
+.text-field{
+    width: 100%;
+}     
+
+/* style the errors in the form so they are visible */       
+.mistake {
+    color: #fff;
+    background-color:#800;
+    border: thin solid #000;
+}     
+
+#errors ol li{
+    color: #ff5555;
+}
+/*****************     End FORM                ****************************/     
