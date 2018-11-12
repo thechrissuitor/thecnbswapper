@@ -1,0 +1,1 @@
+This folder is for general images. Leave the images folder in .gitignore. Only remove it to upload images once you are finished or is necessary.

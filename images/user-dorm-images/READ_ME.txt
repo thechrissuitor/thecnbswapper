@@ -1,0 +1,1 @@
+This folder is the location where users will upload pictures of their dorms. Leave the images folder in .gitignore. Only remove it to upload images once you are finished or is necessary.
