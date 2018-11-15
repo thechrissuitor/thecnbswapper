@@ -5,108 +5,134 @@
  * pages. I want you to put it into the GENERAL section. If you are making
  * page specific CSS, I want you to use comments to create a section indicating
  * the page that the CSS applies to. If you begin to use complex CSS, please
- * write comments.
+ * write comments.888888899o
  *
  */
 /*****************     Begen GENERAL Section             ************************/
 body{
     font: 14pt Arial,Helvetica,sans-serif;
-    max-width: 42em;
-    margin: auto;
-    padding: 0px 8px 0px 10px;
-    width: 90%;
+    margin: auto !important;
+    max-width: 100% !important;
+    padding: 0% 0.5% ;
     background-color: white;
-    border: 2px solid #6A767B;
 }
 /*****************     End GENERAL Section             ************************/
 
+/*****************     Begin Index         *****************************/
+.mainmenu{
+    font-size: 1.2em;
+}
+
+.mainMenu a{
+    text-decoration: none;
+}
+ .mainMenu a:hover{
+    transform: scale(1.15);
+ }
+/*****************     End Index         *****************************/
 /*****************     Begin NAV         *****************************/
+.navbar{
+    background-color: lightcyan;
+    margin: auto;
+    max-width: 100%;
+}
+
 nav ol {
-    padding-left: 0;
+    /*padding-left: 0;*/
 }     
 
 nav ol li{
-    display: inline-block;
+    /*display: inline;
     list-style-type: none;
     padding-right: 3em;
+    text-decoration: none;*/
+}
+
+.activePage{
+
 }
 /*****************     End NAV         *****************************/
 
+/*****************     Begin HEADER         *****************************/
+.CNB{
+    font-size: 1.6em;
+}
+
+/*****************     End HEADER         *****************************/
+
+/*SLIDER*/
+#slideShow{
+    display: inherit !important;
+}
+/*END of SLIDER*/
 /*****************     Begin FOOTER              ****************************/
 footer{
     clear: both;
+    background-color: lightgray;
 }
+
+.fa {
+    padding: .2em;
+    font-size: 20px;
+    width: 2%;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 20%;
+}
+
+.fa:hover {
+    opacity: 0.7;
+    text-decoration: none;
+}
+
+.fa-facebook {
+    background: #3B5998;
+    color: white;
+}
+
+.fa-twitter {
+    background: #55ACEE;
+    color: white;
+}
+
+.fa-snapchat-ghost {
+    background: #fffc00;
+    color: white;
+}
+
+.fa-linkedin {
+    background: #007bb5;
+    color: white;
+}
+
+.fa-instagram {
+    background: #F7507D;
+    color: white;
+}
+
+
 /*****************     End FOOTER              ****************************/
 
-/*****************     Begin FORM                ****************************/     
-fieldset{
-    border: 2px solid #00498e;
-    clear: both;
-    margin-top: 2em;
-    padding: 1em;
+/*****************     Begin SWAP                ****************************/     
+
+/*****************     End SWAP                ****************************/     
+
+/*****************     Begin TRINITY                ****************************/     
+#smallC{
+    width: 20%;
+    padding: 0.8%;
+    margin: 1% 0.5%;
 }
+/*****************     End TRINITY                ****************************/     
 
-label {
-    color: #005cb3;
-    display: block;
-    font-weight: bold;
-    padding-right: 1em;
-}
+/*****************     Begin CENTRAL                ****************************/     
 
-input,
-textarea,
-select{
-    box-sizing: border-box;
-    border: 2px solid #C2C2C2;
-    box-shadow: 2px 2px 4px #EBEBEB; 
-    border-radius: 3px;
-    padding: 1em;
-}
+/*****************     End CENTRAL                ****************************/     
 
-input:focus,
-textarea:focus,
-select:focus{
-    border: 1px solid #0C0;
-}     
+/*****************     Begin ATHLETICS                ****************************/     
 
-input[type=submit]{
-    background: #005cb3 none repeat scroll 0 0;
-    border: medium none;
-    border-radius: 3px;
-    box-shadow: 1px 1px 4px #dadada;
-    color: #fff;
-    width: 100%;
-}
+/*****************     End ATHLETICS                ****************************/     
 
-.buttons legend{
-    display: none;
-}
+/*****************     Begin REDSTONE                ****************************/     
 
-.buttons{
-    text-align: center;
-}
-
-.form-heading {
-    border-bottom: 2px solid #ddd;
-    font-size: 1.25em;
-    font-style: italic;
-    font-weight: bold;
-    margin-bottom: 1.75em;
-    padding-bottom: 0.4em;
-}
-
-.text-field{
-    width: 100%;
-}     
-
-/* style the errors in the form so they are visible */       
-.mistake {
-    color: #fff;
-    background-color:#800;
-    border: thin solid #000;
-}     
-
-#errors ol li{
-    color: #ff5555;
-}
-/*****************     End FORM                ****************************/     
+/*****************     End REDSTONE                ****************************/     
