@@ -1,4 +1,4 @@
 <!-- ######################     Page header   ############################## -->
 <header>
-    <h1>The CNB Swapper</h1>
+    <h1 class="container text-center CNB">The CNB Swapper</h1>
 </header>
