@@ -2,5 +2,5 @@
 ADMIN
 .htaccess
 constants.php
-images
+images/*
 gitcommands.txt
