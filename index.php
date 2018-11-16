@@ -2,6 +2,11 @@
 include "top.php";
 ?>
 <main class="container-fluid">
+    
+    <article class="container text-center">
+        <p class="mainMenu"><a href="#">Explore </a> | <a href="#">Swap</a></p>
+    </article>
+    
 	<!-- The Slider goes Here -->
     <article class="row" id="slideShow">
     	<div id="carouselExampleIndicators" class="carousel slide row sliderImg" data-ride="carousel">
@@ -45,10 +50,6 @@ include "top.php";
 
 	<!--  The Slider ends here -->
 
-
-    <article class="container text-center">
-        <p class="mainMenu"><a href="#">Explore </a> | <a href="#">Swap</a></p>
-    </article>
 </main>
 
 <?php include "footer.php"; ?>
