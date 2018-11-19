@@ -27,8 +27,10 @@ print PHP_EOL . '<!-- SECTION: 1b form variables -->' . PHP_EOL;
 $firstName = "";       
 $lastName = "";
 $classStanding = "";
-$email = "your-email@uvm.edu";     
-
+$email = "";
+$roomNumber = '';
+$roommates = "";
+$dormStyle = "";
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 print PHP_EOL . '<!-- SECTION: 1c form error flags -->' . PHP_EOL;
@@ -39,7 +41,9 @@ $firstNameERROR = false;
 $lastNameERROR = false;
 $emailERROR = false;   
 $classStandingERROR = false;
-
+$roomNumberERROR = false;
+$roommateERROR = false;
+$dormStyleERROR = false;
 ////%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 print PHP_EOL . '<!-- SECTION: 1d misc variables -->' . PHP_EOL;
@@ -81,9 +85,13 @@ if (isset($_POST["btnSubmit"])) {
     
     $email = filter_var($_POST["txtEmail"], FILTER_SANITIZE_EMAIL);       
     
-    $classStanding = filter_var($_POST["txtClassStanding"], FILTER_SANITIZE_EMAIL);
+    $classStanding = htmlentities($_POST["radClassStanding"], ENT_QUOTES, "UTF-8");
     
+    $roomNumber = htmlentities($_POST["txtRoomNumber"], ENT_QUOTES, "UTF-8");
     
+    $roommates = htmlentities($_POST["lstRoommates"], ENT_QUOTES, "UTF-8");
+    
+    $dormStyle = htmlentities($_POST["lstDormStyle"], ENT_QUOTES, "UTF-8");
     
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
@@ -109,6 +117,14 @@ if (isset($_POST["btnSubmit"])) {
         $errorMsg[] = "Your last name appears to have extra character.";
         $lastNameERROR = true;
     }
+    
+    if ($email == "") {
+        $errorMsg[] = 'Please enter your email address';
+        $emailERROR = true;
+    } elseif (!verifyEmail($email)) {       
+        $errorMsg[] = 'Your email address appears to be incorrect.';
+        $emailERROR = true;    
+    } 
     if ($classStanding == "") {
         $errorMsg[] = "Please select a class standing";
         $classStandingERROR = true;
@@ -116,13 +132,28 @@ if (isset($_POST["btnSubmit"])) {
         $errorMsg[] = "Your class standing is not on of our options";
         $classStandingERROR = true;
     }
-    if ($email == "") {
-        $errorMsg[] = 'Please enter your email address';
-        $emailERROR = true;
-    } elseif (!verifyEmail($email)) {       
-        $errorMsg[] = 'Your email address appears to be incorrect.';
-        $emailERROR = true;    
-    }    
+    if ($roomNumber == "") {
+        $errorMsg[] = 'Please enter your room number';
+        $roomNumberERROR = true;
+    } elseif (!verifyAlphaNum($roomNumber)) {       
+        $errorMsg[] = 'Your room number is invalid.';
+        $roomNumberERROR = true;    
+    }
+    if ($roommates == "") {
+        $errorMsg[] = 'Please select number of roommates';
+        $roommateERROR = true;
+    } elseif (!verifyAlphaNum($roommates)) {       
+        $errorMsg[] = 'Number of roommates is invalid.';
+        $roommateERROR = true;    
+    }
+    
+    if ($dormStyle == "") {
+        $errorMsg[] = 'Please select dorm style';
+        $dormStyleERROR = true;
+    } elseif (!verifyAlphaNum($dormStyle)) {       
+        $errorMsg[] = 'Dorm style is invalid.';
+        $dormStyleERROR = true;    
+    }
     
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
@@ -147,9 +178,11 @@ if (isset($_POST["btnSubmit"])) {
         // assign values to the dataRecord array
         $dataRecord[] = $firstName;
         $dataRecord[] = $lastName;
+        $dataRecord[] = $email; 
         $dataRecord[] = $classStanding;
-        $dataRecord[] = $email;
-        
+        $dataRecord[] = $roomNumber;
+        $dataRecord[] = $roommates;
+        $dataRecord[] = $dormStyle;
         
     
         // setup csv file
@@ -245,8 +278,8 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
     
         print $message;
     } else {       
-     print '<h2>Register Today</h2>';
-     print '<p class="form-heading">Your information will greatly help us with our research.</p>';
+     print '<h2>Apply to Swap Today!</h2>';
+     print '<p class="form-heading">Your information will be sent to our swapping database where we will try to pair you with a fellow swapper.</p>';
      
         //####################################
         //
@@ -291,7 +324,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
           method = "post">
 
                 <fieldset class = "contact">
-                    <legend>Contact Information</legend>
+                    <legend>Swap Information</legend>
                     <p>
                         <label class="required" for="txtFirstName">First Name</label>  
                         <input autofocus
@@ -322,27 +355,63 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                             >
                     </p>
                     <p>
-                        <label class = "required" for = "txtLastName">Last Name</label>
+                        <label class = "required" for = "txtEmail">Email</label>
                             <input 
                                    <?php if ($emailERROR) print 'class="mistake"'; ?>
-                                   id = "txtLastName"     
+                                   id = "txtEmail"     
                                    maxlength = "45"
-                                   name = "txtLastName"
+                                   name = "txtEmail"
                                    onfocus = "this.select()"
-                                   placeholder = "Enter your last name"
+                                   placeholder = "sample@uvm.edu"
                                    tabindex = "120"
                                    type = "text"
-                                   value = "<?php print $lastName; ?>"
+                                   value = "<?php print $email; ?>"
                             >
                     </p>  
                     <p>
-                        <label class="required" for="txtClassStanding">Class Standing</label>  
-                        <input type="radio" name="gender" value="<?php print $classStanding; ?>"> Freshman
-                        <input type="radio" name="gender" value="<?php print $classStanding; ?>"> Sophmore
-                        <input type="radio" name="gender" value="<?php print $classStanding; ?>"> Junior 
-                        <input type="radio" name="gender" value="<?php print $classStanding; ?>"> Senior 
+                        <label class="required" for="radClassStanding">Class Standing</label>  
+                        <input type="radio" name="radFreshman" value="<?php print $classStanding; ?>"> Freshman
+                        <input type="radio" name="radSophomore" value="<?php print $classStanding; ?>"> Sophomore
+                        <input type="radio" name="radJunior" value="<?php print $classStanding; ?>"> Junior 
+                        <input type="radio" name="radSenior" value="<?php print $classStanding; ?>"> Senior 
                     </p>
-                    
+                    <p>
+                        <label class = "required" for = "txtRoomNumber">Room Number</label>
+                            <input 
+                                   <?php if ($roomNumberERROR) print 'class="mistake"'; ?>
+                                   id = "txtRoomNumber"     
+                                   maxlength = "45"
+                                   name = "txtRoomNumber"
+                                   onfocus = "this.select()"
+                                   placeholder = ""
+                                   tabindex = "120"
+                                   type = "text"
+                                   value = "<?php print $roomNumber; ?>"
+                            >
+                    </p>
+                    <p>
+                       <label for="lstRoommates">Roommates
+                        <select id="lstRoommates"
+                                name="lstRoommates"
+                                tabindex="300" >
+                            <option value="0" selected>0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+
+                        </select></label>
+                    </p>  
+                    <p>
+                       <label for="lstDormStyle">Dorm Style
+                        <select id="lstDormStyle"
+                                name="lstDormStyle"
+                                tabindex="300" >
+                            <option value="lstTraditional" selected>Traditional</option>
+                            <option value="lstSuite">Suite</option>                     
+                        </select></label>
+                    </p>  
                 </fieldset> <!-- ends contact -->
 
             <fieldset class="buttons">
