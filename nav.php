@@ -24,6 +24,15 @@
             print ' nav-item">';
             print '<a class = "nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>';
             print '</li>';
+            
+            /*Apply*/
+            print '<li class="';
+            if ($path_parts['filename'] == "form") {
+                print ' activePage ';
+            }
+            print ' nav-item">';
+            print '<a class = "nav-link" href="form.php">Apply <span class="sr-only">(current)</span></a>';
+            print '</li>';
 
             /*Swap*/
             print '<li class="';
