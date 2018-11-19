@@ -4,8 +4,8 @@ print PHP_EOL . '<!--  BEGIN include security -->' . PHP_EOL;
 // performs a simple security check to see if our page has submitted the form to itself
 function securityCheck($myFormURL = "") {
     $debugThis = false;  // you have to specifically want to test this
-    $token = 'replace with token from lecture';
-    if($token == 'replace with token from lecture'){
+    $token = '3cac2947c5255ab39371090abb9b27c9601f677e';
+    if($token != '3cac2947c5255ab39371090abb9b27c9601f677e'){
         print "<p>Invalid token. Please get token from Instructor.";
         die();
     }
