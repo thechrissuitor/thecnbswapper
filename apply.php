@@ -173,16 +173,39 @@ if (isset($_POST["btnSubmit"])) {
         // This block saves the data to a CSV file.   
         
         // array used to hold form values that will be saved to a CSV file
-        $dataRecord = array();       
+        $studentDataRecord = array(); 
+        $dormDataRecord = array(); 
         
         // assign values to the dataRecord array
-        $dataRecord[] = $firstName;
-        $dataRecord[] = $lastName;
-        $dataRecord[] = $email; 
-        $dataRecord[] = $classStanding;
-        $dataRecord[] = $roomNumber;
-        $dataRecord[] = $roommates;
-        $dataRecord[] = $dormStyle;
+        $studentDataRecord[] = $firstName;
+        $studentDataRecord[] = $lastName;
+        $studentDataRecord[] = $email; 
+        $studentDataRecord[] = $classStanding;
+        $dormDataRecord[] = $roomNumber;
+        $dormDataRecord[] = $roommates;
+        $dormDataRecord[] = $dormStyle;
+        
+        //INSERT QUERY FOR TBLSTUDENTINFO
+        $studentInsertQuery = "INSERT INTO tblStudentInfo SET fldFirstName = ?, ";
+        $studentInsertQuery .= "fldLastName = ?, fldEmail = ?, ";
+        $studentInsertQuery .= "fldClassStanding = ?";
+                
+        //SEND INSERT QUERY FOR TBLSTUDNETINFO
+        if ($thisDatabaseWriter->querySecurityOk($studentInsertQuery, 0)) {
+            $studentInsertQuery = $thisDatabaseWriter->sanitizeQuery($studentInsertQuery);
+            $studentDataRecord = $thisDatabaseWriter->insert($studentInsertQuery, $studentDataRecord);
+        }
+        
+        //INSERT QUERY FOR TBLDORM
+        $dormInsertQuery = "INSERT INTO tblDorms SET fldRoomNumber = ?, ";
+        $dormInsertQuery .= "fldRoommates = ?, fldDormStyle = ?, ";
+        $dormInsertQuery .= "fnkHallId = ?";
+                
+        //SEND INSERT QUERY FOR TBLSTUDNETINFO
+        if ($thisDatabaseWriter->querySecurityOk($dormInsertQuery, 0)) {
+            $dormInsertQuery = $thisDatabaseWriter->sanitizeQuery($dormInsertQuery);
+            $dormDataRecord = $thisDatabaseWriter->insert($dormInsertQuery, $dormDataRecord);
+        }
         
     
         // setup csv file
