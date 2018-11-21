@@ -24,13 +24,24 @@ print PHP_EOL . '<!-- SECTION: 1b form variables -->' . PHP_EOL;
 // Initialize variables one for each form element
 // in the order they appear on the form
 
-$firstName = "";       
+$firstName = "";
 $lastName = "";
 $classStanding = "";
 $email = "";
+// For the listbox of dorm halls
+$hall = "";
+$hallRecords = '';
+$hallQuery = 'SELECT fldHall, fldHallId ';
+$hallQuery .= ' FROM tblHalls ORDER BY fldHall';
+if ($thisDatabaseReader->querySecurityOk($hallQuery, 0, 1)) {
+    $hallQuery = $thisDatabaseReader->sanitizeQuery($hallQuery);
+    $hallRecords = $thisDatabaseReader->select($hallQuery, '');
+}
+// END dorm halls listbox
 $roomNumber = '';
 $roommates = "";
 $dormStyle = "";
+
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 print PHP_EOL . '<!-- SECTION: 1c form error flags -->' . PHP_EOL;
@@ -41,6 +52,7 @@ $firstNameERROR = false;
 $lastNameERROR = false;
 $emailERROR = false;   
 $classStandingERROR = false;
+$hallERROR = false;
 $roomNumberERROR = false;
 $roommateERROR = false;
 $dormStyleERROR = false;
@@ -87,6 +99,8 @@ if (isset($_POST["btnSubmit"])) {
     
     $classStanding = htmlentities($_POST["radClassStanding"], ENT_QUOTES, "UTF-8");
     
+    $hall = htmlentities($_POST["lstHall"], ENT_QUOTES, "UTF-8");
+    
     $roomNumber = htmlentities($_POST["txtRoomNumber"], ENT_QUOTES, "UTF-8");
     
     $roommates = htmlentities($_POST["lstRoommates"], ENT_QUOTES, "UTF-8");
@@ -131,6 +145,13 @@ if (isset($_POST["btnSubmit"])) {
     } elseif (!verifyAlphaNum($classStanding)) {
         $errorMsg[] = "Your class standing is not on of our options";
         $classStandingERROR = true;
+    }
+    if ($hall == "") {
+        $errorMsg[] = "Please choose a hall.";
+        $hallERROR = true;
+    } elseif (!verifyAlphaNum($hall)) {
+        $errorMsg[] = "There is something wrong with your hall.";
+        $hallERROR = true;
     }
     if ($roomNumber == "") {
         $errorMsg[] = 'Please enter your room number';
@@ -397,6 +418,26 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                         <input type="radio" name="radSophomore" value="<?php print $classStanding; ?>"> Sophomore
                         <input type="radio" name="radJunior" value="<?php print $classStanding; ?>"> Junior 
                         <input type="radio" name="radSenior" value="<?php print $classStanding; ?>"> Senior 
+                    </p>
+                    <p>Hall <br>
+                        <select id="" 
+                                name="lstHall" 
+                                tabindex="180" >
+                            <?php
+                            if (is_array($hallRecords)) {
+                                foreach ($hallRecords as $record) { 
+                                    print "<option value = ";
+                                    print $record['pmkHallId'];
+                                    if($hall == $record['fldHall']){
+                                        print " selected ";
+                                    }
+                                    print " > ";
+                                    print $record['fldHall'];
+                                    print " </option>";
+                                }
+                            }
+                            ?>
+                        </select>
                     </p>
                     <p>
                         <label class = "required" for = "txtRoomNumber">Room Number</label>
