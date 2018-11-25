@@ -31,7 +31,7 @@ $email = "";
 // For the listbox of dorm halls
 $hall = "";
 $hallRecords = '';
-$hallQuery = 'SELECT fldHall, fldHallId ';
+$hallQuery = 'SELECT fldHall, pmkHallId ';
 $hallQuery .= ' FROM tblHalls ORDER BY fldHall';
 if ($thisDatabaseReader->querySecurityOk($hallQuery, 0, 1)) {
     $hallQuery = $thisDatabaseReader->sanitizeQuery($hallQuery);
@@ -99,7 +99,7 @@ if (isset($_POST["btnSubmit"])) {
     
     $classStanding = htmlentities($_POST["radClassStanding"], ENT_QUOTES, "UTF-8");
     
-    $hall = htmlentities($_POST["lstHall"], ENT_QUOTES, "UTF-8");
+    $hall = (int) htmlentities($_POST["lstHall"], ENT_QUOTES, "UTF-8");
     
     $roomNumber = htmlentities($_POST["txtRoomNumber"], ENT_QUOTES, "UTF-8");
     
@@ -149,7 +149,7 @@ if (isset($_POST["btnSubmit"])) {
     if ($hall == "") {
         $errorMsg[] = "Please choose a hall.";
         $hallERROR = true;
-    } elseif (!verifyAlphaNum($hall)) {
+    } elseif (!is_int($hall)) {
         $errorMsg[] = "There is something wrong with your hall.";
         $hallERROR = true;
     }
@@ -193,7 +193,7 @@ if (isset($_POST["btnSubmit"])) {
         //
         // This block saves the data to a CSV file.   
         
-        // array used to hold form values that will be saved to a CSV file
+        // array used to hold form values that will be saved to the database
         $studentDataRecord = array(); 
         $dormDataRecord = array(); 
         
@@ -202,14 +202,32 @@ if (isset($_POST["btnSubmit"])) {
         $studentDataRecord[] = $lastName;
         $studentDataRecord[] = $email; 
         $studentDataRecord[] = $classStanding;
+        $dormDataRecord[] = $hall;
         $dormDataRecord[] = $roomNumber;
         $dormDataRecord[] = $roommates;
         $dormDataRecord[] = $dormStyle;
         
-        //INSERT QUERY FOR TBLSTUDENTINFO
+        //INSERT QUERY FOR TBLDORMS
+        $dormInsertQuery = "INSERT INTO tblDorms SET fnkHallId = ?, ";
+        $dormInsertQuery .= "fldRoomNumber = ?, fldRoommates = ?, ";
+        $dormInsertQuery .= "fldDormStyle = ?, ";
+        $dormInsertQuery .= "fnkStudentId = 0"; //placeholder value
+        
+        //SEND INSERT QUERY FOR TBLDORMS
+        if ($thisDatabaseWriter->querySecurityOk($dormInsertQuery, 0)) {
+            $dormInsertQuery = $thisDatabaseWriter->sanitizeQuery($dormInsertQuery);
+            $dormDataRecord = $thisDatabaseWriter->insert($dormInsertQuery, $dormDataRecord);
+        }
+        
+        ////INSERT QUERY FOR TBLSTUDENTINFO
+        //
+        //grab the dorm ID from the recent insert
+        $dormId = $thisDatabaseWriter->lastInsert();
+        $studentDataRecord[] = $dormId;
+        
         $studentInsertQuery = "INSERT INTO tblStudentInfo SET fldFirstName = ?, ";
         $studentInsertQuery .= "fldLastName = ?, fldEmail = ?, ";
-        $studentInsertQuery .= "fldClassStanding = ?";
+        $studentInsertQuery .= "fldClassStanding = ?, fnkDormId = ?";
                 
         //SEND INSERT QUERY FOR TBLSTUDNETINFO
         if ($thisDatabaseWriter->querySecurityOk($studentInsertQuery, 0)) {
@@ -217,17 +235,19 @@ if (isset($_POST["btnSubmit"])) {
             $studentDataRecord = $thisDatabaseWriter->insert($studentInsertQuery, $studentDataRecord);
         }
         
-        //INSERT QUERY FOR TBLDORM
-        $dormInsertQuery = "INSERT INTO tblDorms SET fldRoomNumber = ?, ";
-        $dormInsertQuery .= "fldRoommates = ?, fldDormStyle = ?, ";
-        $dormInsertQuery .= "fnkHallId = ?";
-                
-        //SEND INSERT QUERY FOR TBLSTUDNETINFO
-        if ($thisDatabaseWriter->querySecurityOk($dormInsertQuery, 0)) {
-            $dormInsertQuery = $thisDatabaseWriter->sanitizeQuery($dormInsertQuery);
-            $dormDataRecord = $thisDatabaseWriter->insert($dormInsertQuery, $dormDataRecord);
+        //UPDATE TBLDORMS WITH CORRECT FNKSTUDENTID
+        //
+        //grab the student ID from the recent insert
+        $studentId = $thisDatabaseWriter->lastInsert();
+        $dormUpdateDataRecord[] = $studentId;
+        $dormUpdateDataRecord[] = $dormId;
+        $dormUpdateQuery = "UPDATE tblDorms SET ";
+        $dormUpdateQuery .= "fnkStudentId = ? WHERE pmkUserDormId = ?";
+        //SEND UPDATE QUERY FOR TBLSTUDNETINFO
+        if ($thisDatabaseWriter->querySecurityOk($dormUpdateQuery)) {
+            $dormUpdateQuery = $thisDatabaseWriter->sanitizeQuery($dormUpdateQuery);
+            $dormUpdateDataRecord = $thisDatabaseWriter->insert($dormUpdateQuery, $dormUpdateDataRecord);
         }
-        
     
         // setup csv file
         $myFolder = 'data/';
@@ -412,12 +432,11 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                                    value = "<?php print $email; ?>"
                             >
                     </p>  
-                    <p>
-                        <label class="required" for="radClassStanding">Class Standing</label>  
-                        <input type="radio" name="radFreshman" value="<?php print $classStanding; ?>"> Freshman
-                        <input type="radio" name="radSophomore" value="<?php print $classStanding; ?>"> Sophomore
-                        <input type="radio" name="radJunior" value="<?php print $classStanding; ?>"> Junior 
-                        <input type="radio" name="radSenior" value="<?php print $classStanding; ?>"> Senior 
+                    <p>Class Standing 
+                        <label class="required" for="radClassStanding"><input type="radio" name="radClassStanding" value="Freshman"> Freshman</label>
+                        <label class="required" for="radClassStanding"><input type="radio" name="radClassStanding" value="Sophomore"> Sophomore</label>
+                        <label class="required" for="radClassStanding"><input type="radio" name="radClassStanding" value="Junior"> Junior</label>
+                        <label class="required" for="radClassStanding"><input type="radio" name="radClassStanding" value="Senior"> Senior</label>
                     </p>
                     <p>Hall <br>
                         <select id="" 
@@ -428,7 +447,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                                 foreach ($hallRecords as $record) { 
                                     print "<option value = ";
                                     print $record['pmkHallId'];
-                                    if($hall == $record['fldHall']){
+                                    if($hall == $record['pmkHallId']){
                                         print " selected ";
                                     }
                                     print " > ";
@@ -462,8 +481,6 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
 
                         </select></label>
                     </p>  
