@@ -1,5 +1,8 @@
 <?php
 include 'top.php';
+//print '<p><pre>';
+//phpinfo();
+//print '</pre></p>';
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //       
 print  PHP_EOL . '<!-- SECTION: 1 Initialize variables -->' . PHP_EOL;       
@@ -14,6 +17,9 @@ print  PHP_EOL . '<!-- SECTION: 1a. debugging setup -->' . PHP_EOL;
 // if ($debug){ 
     print '<p>Post Array:</p><pre>';
     print_r($_POST);
+    print '</pre>';
+    print '<p>Files Array:</p><pre>';
+    print_r($_FILES);
     print '</pre>';
 // }
 
@@ -41,6 +47,8 @@ if ($thisDatabaseReader->querySecurityOk($hallQuery, 0, 1)) {
 $roomNumber = '';
 $roommates = "";
 $dormStyle = "";
+$description = "";
+$image = "images/user-dorm-images/";
 
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
@@ -56,6 +64,8 @@ $hallERROR = false;
 $roomNumberERROR = false;
 $roommateERROR = false;
 $dormStyleERROR = false;
+$descriptionERROR = false;
+$imageERROR = false;
 ////%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 print PHP_EOL . '<!-- SECTION: 1d misc variables -->' . PHP_EOL;
@@ -106,6 +116,11 @@ if (isset($_POST["btnSubmit"])) {
     $roommates = htmlentities($_POST["lstRoommates"], ENT_QUOTES, "UTF-8");
     
     $dormStyle = htmlentities($_POST["lstDormStyle"], ENT_QUOTES, "UTF-8");
+    
+    $description = htmlentities($_POST["txtDescription"], ENT_QUOTES, "UTF-8");
+    
+    // code received from https://www.w3schools.com/php/php_file_upload.asp
+    $image .= basename($_FILES["imgImage"]["name"]);
     
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
@@ -176,6 +191,56 @@ if (isset($_POST["btnSubmit"])) {
         $dormStyleERROR = true;    
     }
     
+    if (!verifyAlphaNum($description)) {
+        $errorMsg[] = "Your comments appear to have unauthorized characters.";
+        $descriptionERROR = true;
+    }
+    
+    if ($image == "") {
+        $errorMsg[] = 'Please upload an image.';
+        $imageERROR = true;
+    }
+    // code received from https://www.w3schools.com/php/php_file_upload.asp
+    $imageFileType = strtolower(pathinfo($image,PATHINFO_EXTENSION));
+    $uploadOk = 1;
+    // Check if image file is a actual image or fake image
+    $check = getimagesize($_FILES["imgImage"]["tmp_name"]);
+    if($check !== false) {
+        //echo "File is an image - " . $check["mime"] . ".";
+        $uploadOk = 1; // everythig is good
+    } else {
+        $errorMsg[] =  "File is not an image.";
+        $imageERROR = true;
+        $uploadOk = 0;
+    }
+    
+    // Check file size
+    if ($_FILES["imgImage"]["size"] > 2000000) { //if greater than 2MB
+        $errorMsg[] = "Sorry, your file is too large. Must be less than 2MB";
+        $imageERROR = true;
+        $uploadOk = 0;
+    }
+    // Allow certain file formats
+    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+    && $imageFileType != "gif" ) {
+        $errorMsg[] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed. The image type is " . $imageFileType;
+        $imageERROR = true;
+        $uploadOk = 0;
+    }
+    // Check if $uploadOk is set to 0 by an error
+    if ($uploadOk == 0) {
+        $errorMsg[] = "Sorry, your image was not uploaded.";
+        $imageERROR = true;
+    // if everything is ok, try to upload file
+    } else {
+        if (move_uploaded_file($_FILES["imgImage"]["tmp_name"], $image)) {
+            //echo "The file ". basename($_FILES["imgImage"]["name"]). " has been uploaded.";
+        } else {
+            $errorMsg[] = "Sorry, there was an error uploading your image.";
+            $imageERROR = true;
+        }
+    }
+    
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
     print PHP_EOL . '<!-- SECTION: 2d Process Form - Passed Validation -->' . PHP_EOL;
@@ -196,6 +261,7 @@ if (isset($_POST["btnSubmit"])) {
         // array used to hold form values that will be saved to the database
         $studentDataRecord = array(); 
         $dormDataRecord = array(); 
+        $imageDataRecord = array();
         
         // assign values to the dataRecord array
         $studentDataRecord[] = $firstName;
@@ -206,11 +272,26 @@ if (isset($_POST["btnSubmit"])) {
         $dormDataRecord[] = $roomNumber;
         $dormDataRecord[] = $roommates;
         $dormDataRecord[] = $dormStyle;
+        $dormDataRecord[] = $description;
+        $imageDataRecord[] = $image;
+        
+        //INSERT QUERY FOR TBLUSERIMAGES
+        $imageInsertQuery = "INSERT INTO tblUserImages SET fldImagePath = ?";
+        
+        //SEND INSERT QUERY FOR TBLUSERIMAGES
+        if ($thisDatabaseWriter->querySecurityOk($imageInsertQuery, 0)) {
+            $imageInsertQuery = $thisDatabaseWriter->sanitizeQuery($imageInsertQuery);
+            $imageDataRecord = $thisDatabaseWriter->insert($imageInsertQuery, $imageDataRecord);
+        }
+        
+        //grab the image ID from the recent insert
+        $imageId = $thisDatabaseWriter->lastInsert();
+        $dormDataRecord[] = $imageId;
         
         //INSERT QUERY FOR TBLDORMS
         $dormInsertQuery = "INSERT INTO tblDorms SET fnkHallId = ?, ";
         $dormInsertQuery .= "fldRoomNumber = ?, fldRoommates = ?, ";
-        $dormInsertQuery .= "fldDormStyle = ?, ";
+        $dormInsertQuery .= "fldDormStyle = ?, fldDescription = ?, fnkImagePath = ?, ";
         $dormInsertQuery .= "fnkStudentId = 0"; //placeholder value
         
         //SEND INSERT QUERY FOR TBLDORMS
@@ -306,7 +387,7 @@ if (isset($_POST["btnSubmit"])) {
         // subject of mail should make sense to your form
         $subject = 'Groovy: ';
 
-        $mailed = sendMail($to, $cc, $bcc, $from, $subject, $message);
+        //$mailed = sendMail($to, $cc, $bcc, $from, $subject, $message);
 
     } // end form is valid     
 
@@ -384,8 +465,9 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
 
 
 <form action = "<?php print $phpSelf; ?>"
-          id = "frmRegister"
-          method = "post">
+          id = "frmApply"
+          method = "post"
+          enctype="multipart/form-data">
 
                 <fieldset class = "contact">
                     <legend>Swap Information</legend>
@@ -427,21 +509,37 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                                    name = "txtEmail"
                                    onfocus = "this.select()"
                                    placeholder = "sample@uvm.edu"
-                                   tabindex = "120"
+                                   tabindex = "140"
                                    type = "text"
                                    value = "<?php print $email; ?>"
                             >
                     </p>  
-                    <p>Class Standing 
-                        <label class="required" for="radClassStanding"><input type="radio" name="radClassStanding" value="Freshman"> Freshman</label>
-                        <label class="required" for="radClassStanding"><input type="radio" name="radClassStanding" value="Sophomore"> Sophomore</label>
-                        <label class="required" for="radClassStanding"><input type="radio" name="radClassStanding" value="Junior"> Junior</label>
-                        <label class="required" for="radClassStanding"><input type="radio" name="radClassStanding" value="Senior"> Senior</label>
+                    <p>Class Standing <br>
+                        <label class="required" for="radClassStanding">
+                            <input type="radio" name="radClassStanding"
+                                   tabindex = "160" 
+                                   <?php if($classStanding==="Freshman") print ' selected '; ?>
+                                   value="Freshman"> Freshman</label><br>
+                        <label class="required" for="radClassStanding">
+                            <input type="radio" name="radClassStanding"
+                                   tabindex = "180"
+                                   <?php if($classStanding==="Sophomore") print ' selected '; ?>
+                                   value="Sophomore"> Sophomore</label><br>
+                        <label class="required" for="radClassStanding">
+                            <input type="radio" name="radClassStanding"
+                                   tabindex = "200"
+                                   <?php if($classStanding==="Junior") print ' selected '; ?>
+                                   value="Junior"> Junior</label><br>
+                        <label class="required" for="radClassStanding">
+                            <input type="radio" name="radClassStanding"
+                                   tabindex = "220"
+                                   <?php if($classStanding==="Senior") print ' selected '; ?>
+                                   value="Senior"> Senior</label>
                     </p>
                     <p>Hall <br>
                         <select id="" 
                                 name="lstHall" 
-                                tabindex="180" >
+                                tabindex="240" >
                             <?php
                             if (is_array($hallRecords)) {
                                 foreach ($hallRecords as $record) { 
@@ -467,20 +565,20 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                                    name = "txtRoomNumber"
                                    onfocus = "this.select()"
                                    placeholder = ""
-                                   tabindex = "120"
+                                   tabindex = "260"
                                    type = "text"
-                                   value = "<?php print $roomNumber; ?>"
+                                   value = <?php print $roomNumber; ?>
                             >
                     </p>
                     <p>
                        <label for="lstRoommates">Roommates
                         <select id="lstRoommates"
                                 name="lstRoommates"
-                                tabindex="300" >
-                            <option value="0" selected>0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
+                                tabindex="280" >
+                            <option value="0" <?php if($roommates==0) print ' selected '; ?>>0</option>
+                            <option value="1" <?php if($roommates==1) print ' selected '; ?>>1</option>
+                            <option value="2" <?php if($roommates==2) print ' selected '; ?>>2</option>
+                            <option value="3" <?php if($roommates==3) print ' selected '; ?>>3</option>
 
                         </select></label>
                     </p>  
@@ -489,10 +587,23 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                         <select id="lstDormStyle"
                                 name="lstDormStyle"
                                 tabindex="300" >
-                            <option value="lstTraditional" selected>Traditional</option>
-                            <option value="lstSuite">Suite</option>                     
+                            <option value="Traditional" 
+                                <?php if($dormStyle==="Traditional") print ' selected '; ?>
+                                    >Traditional</option>
+                            <option value="Suite"
+                                <?php if($dormStyle==="Suite") print ' selected '; ?>
+                                    >Suite</option>                     
                         </select></label>
                     </p>  
+                    <p>Comments:<br>
+                    <textarea rows="4" cols="50" name="txtDescription"
+                              tabindex="320" placeholder="Enter comments here."
+                              value = "<?php print $description; ?>"
+                              form="frmApply"></textarea>
+                    </p>
+                    <p>Upload a picture of your dorm:
+                        <input type="file" name="imgImage" id="imgImage" tabindex="320">
+                    </p>
                 </fieldset> <!-- ends contact -->
 
             <fieldset class="buttons">
