@@ -1,5 +1,8 @@
 <?php
 include 'top.php';
+//print '<p><pre>';
+//phpinfo();
+//print '</pre></p>';
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //       
 print  PHP_EOL . '<!-- SECTION: 1 Initialize variables -->' . PHP_EOL;       
@@ -117,7 +120,7 @@ if (isset($_POST["btnSubmit"])) {
     $description = htmlentities($_POST["txtDescription"], ENT_QUOTES, "UTF-8");
     
     // code received from https://www.w3schools.com/php/php_file_upload.asp
-    $image .= basename($_POST["imgImage"]);
+    $image .= basename($_FILES["imgImage"]["name"]);
     
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
@@ -201,13 +204,9 @@ if (isset($_POST["btnSubmit"])) {
     $imageFileType = strtolower(pathinfo($image,PATHINFO_EXTENSION));
     $uploadOk = 1;
     // Check if image file is a actual image or fake image
-    print '<p><pre>';
-    print $_POST["imgImage"];
-    print '<br>';
-    print gettype($_POST["imgImage"]);
-    print '</pre></pre>';
-    $check = getimagesize($_POST["imgImage"]);
+    $check = getimagesize($_FILES["imgImage"]["tmp_name"]);
     if($check !== false) {
+        //echo "File is an image - " . $check["mime"] . ".";
         $uploadOk = 1; // everythig is good
     } else {
         $errorMsg[] =  "File is not an image.";
@@ -216,8 +215,8 @@ if (isset($_POST["btnSubmit"])) {
     }
     
     // Check file size
-    if ($_POST["imgImage"] > 500000) { //if greater than 500KB
-        $errorMsg[] = "Sorry, your file is too large.";
+    if ($_FILES["imgImage"]["size"] > 2000000) { //if greater than 2MB
+        $errorMsg[] = "Sorry, your file is too large. Must be less than 2MB";
         $imageERROR = true;
         $uploadOk = 0;
     }
@@ -234,8 +233,8 @@ if (isset($_POST["btnSubmit"])) {
         $imageERROR = true;
     // if everything is ok, try to upload file
     } else {
-        if (move_uploaded_file($_POST["imgImage"], $image)) {
-            echo "The file ". basename($_POST["imgImage"]). " has been uploaded.";
+        if (move_uploaded_file($_FILES["imgImage"]["tmp_name"], $image)) {
+            //echo "The file ". basename($_FILES["imgImage"]["name"]). " has been uploaded.";
         } else {
             $errorMsg[] = "Sorry, there was an error uploading your image.";
             $imageERROR = true;
@@ -292,7 +291,7 @@ if (isset($_POST["btnSubmit"])) {
         //INSERT QUERY FOR TBLDORMS
         $dormInsertQuery = "INSERT INTO tblDorms SET fnkHallId = ?, ";
         $dormInsertQuery .= "fldRoomNumber = ?, fldRoommates = ?, ";
-        $dormInsertQuery .= "fldDormStyle = ?, fldDescription = ?, fnkImagePath = ? ";
+        $dormInsertQuery .= "fldDormStyle = ?, fldDescription = ?, fnkImagePath = ?, ";
         $dormInsertQuery .= "fnkStudentId = 0"; //placeholder value
         
         //SEND INSERT QUERY FOR TBLDORMS
