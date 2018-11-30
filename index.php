@@ -7,6 +7,7 @@ include "top.php";
         <p class="mainMenu"><a href="#">Explore </a> | <a href="#">Swap</a></p>
     </article>
     
+    <!-- carousel received from: https://getbootstrap.com/docs/4.1/components/carousel/ -->
 	<!-- The Slider goes Here -->
     <article class="row" id="slideShow">
     	<div id="carouselExampleIndicators" class="carousel slide row sliderImg" data-ride="carousel">
