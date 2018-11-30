@@ -26,14 +26,24 @@
                 print ' nav-item">';
                 print '<a class = "nav-link" href="../index.php">Home <span class="sr-only">(current)</span></a>';
                 print '</li>';
-
-                /*Put your dorm on the market*/
+                
+                
+                /*Apply*/
                 print '<li class="';
                 if ($path_parts['filename'] == "apply") {
                     print ' activePage ';
                 }
                 print ' nav-item">';
                 print '<a class = "nav-link" href="apply.php">Create Request</a>';
+                print '</li>';
+                
+                /*Explre*/
+                print '<li class="';
+                if ($path_parts['filename'] == "explore") {
+                    print ' activePage ';
+                }
+                print ' nav-item">';
+                print '<a class = "nav-link" href="explore.php">Explore</a>';
                 print '</li>';
 
                 /*Trinity*/
@@ -91,6 +101,15 @@
                 }
                 print ' nav-item">';
                 print '<a class = "nav-link" href="require_login/apply.php">Create Request</a>';
+                print '</li>';
+                
+                /*Explre*/
+                print '<li class="';
+                if ($path_parts['filename'] == "explore") {
+                    print ' activePage ';
+                }
+                print ' nav-item">';
+                print '<a class = "nav-link" href="explore.php">Explore</a>';
                 print '</li>';
 
                 /*Trinity*/
