@@ -1,5 +1,5 @@
 <?php
-include 'top.php';
+include '../top.php';
 //print '<p><pre>';
 //phpinfo();
 //print '</pre></p>';
@@ -8,14 +8,15 @@ include 'top.php';
 print  PHP_EOL . '<!-- SECTION: 1 Initialize variables -->' . PHP_EOL;       
 // These variables are used in both sections 2 and 3, otherwise we would
 // declare them in the section we needed them
-if ($request)
+//if ($request)
 print  PHP_EOL . '<!-- SECTION: 1a. debugging setup -->' . PHP_EOL;
 // We print out the post array so that we can see our form is working.
 // Normally i wrap this in a debug statement but for now i want to always
 // display it. when you first come to the form it is empty. when you submit the
 // form it displays the contents of the post array.
 // if ($debug){ 
-    print '<p>Post Array:</p><pre>';
+    print '<p>Post Array:<br></p><pre>';
+    print_r($path_parts);
     print_r($_POST);
     print '</pre>';
     print '<p>Files Array:</p><pre>';
@@ -30,6 +31,7 @@ print PHP_EOL . '<!-- SECTION: 1b form variables -->' . PHP_EOL;
 // Initialize variables one for each form element
 // in the order they appear on the form
 
+$hidden = "";
 $firstName = "";
 $lastName = "";
 $classStanding = "";
@@ -48,7 +50,7 @@ $roomNumber = '';
 $roommates = "";
 $dormStyle = "";
 $description = "";
-$image = "images/user-dorm-images/";
+$image = "../images/user-dorm-images/";
 
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
@@ -56,6 +58,7 @@ print PHP_EOL . '<!-- SECTION: 1c form error flags -->' . PHP_EOL;
 //
 // Initialize Error Flags one for each form element we validate
 // in the order they appear on the form
+$hiddenERROR = false;
 $firstNameERROR = false;
 $lastNameERROR = false;
 $emailERROR = false;   
@@ -100,6 +103,8 @@ if (isset($_POST["btnSubmit"])) {
     print PHP_EOL . '<!-- SECTION: 2b Sanitize (clean) data  -->' . PHP_EOL;
     // remove any potential JavaScript or html code from users input on the
     // form. Note it is best to follow the same order as declared in section 1c.
+    
+    $hidden = htmlentities($_POST["hdnUserName"], ENT_QUOTES, "UTF-8");
 
     $firstName = htmlentities($_POST["txtFirstName"], ENT_QUOTES, "UTF-8");     
     
@@ -118,7 +123,7 @@ if (isset($_POST["btnSubmit"])) {
     $dormStyle = htmlentities($_POST["lstDormStyle"], ENT_QUOTES, "UTF-8");
     
     $description = htmlentities($_POST["txtDescription"], ENT_QUOTES, "UTF-8");
-    
+        
     // code received from https://www.w3schools.com/php/php_file_upload.asp
     $image .= basename($_FILES["imgImage"]["name"]);
     
@@ -132,6 +137,10 @@ if (isset($_POST["btnSubmit"])) {
     // order that the elements appear on your form so that the error messages
     // will be in the order they appear. errorMsg will be displayed on the form
     // see section 3b. The error flag ($emailERROR) will be used in section 3c.
+    if ($hidden == ""){
+        $errorMsg[] = "There is something wrong with your login.";
+        $hiddenERROR = true;
+    }
     if ($firstName == "") {
         $errorMsg[] = "Please enter your first name";
         $firstNameERROR = true;
@@ -268,6 +277,7 @@ if (isset($_POST["btnSubmit"])) {
         $studentDataRecord[] = $lastName;
         $studentDataRecord[] = $email; 
         $studentDataRecord[] = $classStanding;
+        $studentDataRecord[] = $hidden;
         $dormDataRecord[] = $hall;
         $dormDataRecord[] = $roomNumber;
         $dormDataRecord[] = $roommates;
@@ -308,7 +318,8 @@ if (isset($_POST["btnSubmit"])) {
         
         $studentInsertQuery = "INSERT INTO tblStudentInfo SET fldFirstName = ?, ";
         $studentInsertQuery .= "fldLastName = ?, fldEmail = ?, ";
-        $studentInsertQuery .= "fldClassStanding = ?, fnkDormId = ?";
+        $studentInsertQuery .= "fldClassStanding = ?, fldNetIdUserName = ?, ";
+        $studentInsertQuery .= "fnkDormId = ?";
                 
         //SEND INSERT QUERY FOR TBLSTUDNETINFO
         if ($thisDatabaseWriter->querySecurityOk($studentInsertQuery, 0)) {
@@ -471,6 +482,11 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
 
                 <fieldset class = "contact">
                     <legend>Swap Information</legend>
+                    
+                    <?php
+                    $username = htmlentities($_SERVER["REMOTE_USER"], ENT_QUOTES, "UTF-8");
+                    ?>
+                    <input id="hdnUserName" name="hdnUserName" type="hidden" value=<?php print $username; ?>>
                     <p>
                         <label class="required" for="txtFirstName">First Name</label>  
                         <input autofocus
@@ -617,7 +633,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
     </article>     
 </main>     
 
-<?php include 'footer.php'; ?>
+<?php include '../footer.php'; ?>
 
 </body>     
 </html>
