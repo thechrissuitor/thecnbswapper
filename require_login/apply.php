@@ -468,7 +468,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
 
 
 <form action = "<?php print $phpSelf; ?>"
-          id = "frmApply"
+          id = "frmRegister"
           method = "post"
           enctype="multipart/form-data">
 
@@ -522,6 +522,70 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                                    type = "text"
                                    value = "<?php print $email; ?>"
                             >
+                    </p>
+                    
+                    <p>Hall <br>
+                        <select id="" 
+                                name="lstHall" 
+                                tabindex="240" >
+                            <?php
+                            if (is_array($hallRecords)) {
+                                foreach ($hallRecords as $record) { 
+                                    print "<option value = ";
+                                    print $record['pmkHallId'];
+                                    if($hall == $record['pmkHallId']){
+                                        print " selected ";
+                                    }
+                                    print " > ";
+                                    print $record['fldHall'];
+                                    print " </option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </p>
+                    
+                    
+                    <p>
+                        <label class = "required" for = "txtRoomNumber">Room Number</label>
+                            <input 
+                                   <?php if ($roomNumberERROR) print 'class="mistake"'; ?>
+                                   id = "txtRoomNumber"     
+                                   maxlength = "45"
+                                   name = "txtRoomNumber"
+                                   onfocus = "this.select()"
+                                   placeholder = ""
+                                   tabindex = "260"
+                                   type = "text"
+                                   value = <?php print $roomNumber; ?>
+                            >
+                    </p>
+                    
+                    <p>
+                       <label for="lstDormStyle">Dorm Style
+                        <select id="lstDormStyle"
+                                name="lstDormStyle"
+                                tabindex="300" >
+                            <option value="Traditional" 
+                                <?php if($dormStyle==="Traditional") print ' selected '; ?>
+                                    >Traditional</option>
+                            <option value="Suite"
+                                <?php if($dormStyle==="Suite") print ' selected '; ?>
+                                    >Suite</option>                     
+                        </select></label>
+                    </p>
+                    
+                    <p>
+                       <label for="lstRoommates">Roommates
+                        <select id="lstRoommates"
+                                name="lstRoommates"
+                                tabindex="280" >
+                            <option value="0" <?php if($roommates==0) print ' selected '; ?>>0</option>
+                            <option value="1" <?php if($roommates==1) print ' selected '; ?>>1</option>
+                            <option value="2" <?php if($roommates==2) print ' selected '; ?>>2</option>
+                            <option value="3" <?php if($roommates==3) print ' selected '; ?>>3</option>
+
+                        </select></label>
                     </p>  
                     <p>Class Standing <br>
                         <label class="required" for="radClassStanding">
@@ -545,65 +609,6 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                                    <?php if($classStanding==="Senior") print ' checked '; ?>
                                    value="Senior"> Senior</label>
                     </p>
-                    <p>Hall <br>
-                        <select id="" 
-                                name="lstHall" 
-                                tabindex="240" >
-                            <?php
-                            if (is_array($hallRecords)) {
-                                foreach ($hallRecords as $record) { 
-                                    print "<option value = ";
-                                    print $record['pmkHallId'];
-                                    if($hall == $record['pmkHallId']){
-                                        print " selected ";
-                                    }
-                                    print " > ";
-                                    print $record['fldHall'];
-                                    print " </option>";
-                                }
-                            }
-                            ?>
-                        </select>
-                    </p>
-                    <p>
-                        <label class = "required" for = "txtRoomNumber">Room Number</label>
-                            <input 
-                                   <?php if ($roomNumberERROR) print 'class="mistake"'; ?>
-                                   id = "txtRoomNumber"     
-                                   maxlength = "45"
-                                   name = "txtRoomNumber"
-                                   onfocus = "this.select()"
-                                   placeholder = ""
-                                   tabindex = "260"
-                                   type = "text"
-                                   value = <?php print $roomNumber; ?>
-                            >
-                    </p>
-                    <p>
-                       <label for="lstRoommates">Roommates
-                        <select id="lstRoommates"
-                                name="lstRoommates"
-                                tabindex="280" >
-                            <option value="0" <?php if($roommates==0) print ' selected '; ?>>0</option>
-                            <option value="1" <?php if($roommates==1) print ' selected '; ?>>1</option>
-                            <option value="2" <?php if($roommates==2) print ' selected '; ?>>2</option>
-                            <option value="3" <?php if($roommates==3) print ' selected '; ?>>3</option>
-
-                        </select></label>
-                    </p>  
-                    <p>
-                       <label for="lstDormStyle">Dorm Style
-                        <select id="lstDormStyle"
-                                name="lstDormStyle"
-                                tabindex="300" >
-                            <option value="Traditional" 
-                                <?php if($dormStyle==="Traditional") print ' selected '; ?>
-                                    >Traditional</option>
-                            <option value="Suite"
-                                <?php if($dormStyle==="Suite") print ' selected '; ?>
-                                    >Suite</option>                     
-                        </select></label>
-                    </p>  
                     <p>Comments:<br>
                     <textarea rows="4" cols="50" name="txtDescription"
                               tabindex="320" placeholder="Enter comments here." 

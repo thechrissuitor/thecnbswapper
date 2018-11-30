@@ -2,12 +2,6 @@
 include "top.php";
 ?>
 <main class="container-fluid">
-    
-    <article class="container text-center">
-        <p class="mainMenu"><a href="#">Explore </a> | <a href="#">Swap</a></p>
-    </article>
-    
-    <!-- carousel received from: https://getbootstrap.com/docs/4.1/components/carousel/ -->
 	<!-- The Slider goes Here -->
     <article class="row" id="slideShow">
     	<div id="carouselExampleIndicators" class="carousel slide row sliderImg" data-ride="carousel">
@@ -22,7 +16,7 @@ include "top.php";
     		</ul>
             <div class="carousel-inner">
                 <figure class="carousel-item active">
-                    <img class="d-block w-100" src="images/indexImg/try.png" alt="">
+                    <img class="d-block w-100" src="images/indexImg/mcAuley_outside.JPG" alt="">
                 </figure>
 
                 <?php
@@ -47,10 +41,12 @@ include "top.php";
                 <span class="sr-only">Next</span>
             </a>    
     	</div>
+        <p class="mainMenu text-center">
+            <a href="explore.php" class="hExplore"> Explore </a> | <a href="apply.php" class="hApply">Swap</a>
+        </p>
     </article>
 
 	<!--  The Slider ends here -->
-
 </main>
 
 <?php include "footer.php"; ?>

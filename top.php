@@ -29,27 +29,7 @@ $path_parts = pathinfo($phpSelf);
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<!-- End of Footer Icons -->
 
-        <!-- <link rel="stylesheet" href="css/custom.css" type="text/css" media="screen"> -->
-
-        <!-- Begin of Slider
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        <script src="js/jquery.flexslider.js"></script>
-        
-         <script type="text/javascript">
-            var flexsliderStylesLocation = "css/flexsliderFinal.css";
-            $('<link rel="stylesheet" type="text/css" href="'+flexsliderStylesLocation+'" >').appendTo("head");
-            $(window).load(function() {
-
-                $('.flexslider').flexslider({
-                    animation: "fade",
-                    slideshowSpeed: 3000,
-                    animationSpeed: 1000
-                });
-
-            });
-            </script>
-
-            <!-- End of Slider -->
+        <link rel="stylesheet" href="css/custom.css" type="text/css" media="screen">
 
         <?php
         // %^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
@@ -83,22 +63,6 @@ $path_parts = pathinfo($phpSelf);
             <!-- Begin of Slider -->
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
             <script src="../js/jquery.flexslider.js"></script>
-
-             <script type="text/javascript">
-                var flexsliderStylesLocation = "../css/flexsliderFinal.css";
-                $('<link rel="stylesheet" type="text/css" href="'+flexsliderStylesLocation+'" >').appendTo("head");
-                $(window).load(function() {
-
-                    $('.flexslider').flexslider({
-                        animation: "fade",
-                        slideshowSpeed: 3000,
-                        animationSpeed: 1000
-                    });
-
-                });
-            </script>
-
-            <!-- End of Slider -->
             
             <?php
                     
@@ -121,28 +85,7 @@ $path_parts = pathinfo($phpSelf);
             
         ?>
             
-        <link rel="stylesheet" href="css/custom.css" type="text/css" media="screen">
-        
-        <!-- Begin of Slider -->
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        <script src="js/jquery.flexslider.js"></script>
-        
-         <script type="text/javascript">
-            var flexsliderStylesLocation = "css/flexsliderFinal.css";
-            $('<link rel="stylesheet" type="text/css" href="'+flexsliderStylesLocation+'" >').appendTo("head");
-            $(window).load(function() {
-
-                $('.flexslider').flexslider({
-                    animation: "fade",
-                    slideshowSpeed: 3000,
-                    animationSpeed: 1000
-                });
-
-            });
-            </script>
-
-        <!-- End of Slider -->
-            
+        <link rel="stylesheet" href="css/custom.css" type="text/css" media="screen">    
         <?php
         
         print '<!-- begin including libraries -->';
@@ -170,10 +113,10 @@ $path_parts = pathinfo($phpSelf);
     
     if ($path_parts['dirname'] == "/cs148/dev-final-project/require_login") {
         include '../nav.php';
-        include '../header.php';
+//        include '../header.php';
     } else {
         include 'nav.php';
-        include 'header.php';
+//        include 'header.php';
     }
     
     if ($debug) {

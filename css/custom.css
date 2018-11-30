@@ -9,47 +9,75 @@
  *
  */
 /*****************     Begen GENERAL Section             ************************/
+/**{
+    margin: 0 !important;
+    padding: 0 !important;
+}*/
+
+html{
+    height: 100%;
+}
+
 body{
+    height: 100%;
     font: 14pt Arial,Helvetica,sans-serif;
     margin: auto !important;
     max-width: 100% !important;
-    padding: 0% 0.5% ;
+    padding: 0%;
     background-color: white;
+    
 }
+
+main{
+    min-height: 100%;
+    margin-bottom: 0% !important; 
+}
+
+/*article{
+    overflow: auto;
+}*/
 /*****************     End GENERAL Section             ************************/
 
 /*****************     Begin Index         *****************************/
-.mainmenu{
-    font-size: 1.2em;
+.mainMenu{
+    font-size: 2em;
 }
 
 .mainMenu a{
     text-decoration: none;
+    color: #227C05
 }
- .mainMenu a:hover{
-    transform: scale(1.15);
- }
+
+.mainMenu a:hover{
+    transform: scale(2);
+}
+
+.hApply:hover, .hExplore:hover{
+    transform: scale(2)
+}
+
 /*****************     End Index         *****************************/
 /*****************     Begin NAV         *****************************/
 .navbar{
-    background-color: lightcyan;
+    background-color: #1E7003;
     margin: auto;
     max-width: 100%;
 }
 
 nav ol {
-    /*padding-left: 0;*/
+    padding: 1% 3% !important;
 }     
 
-nav ol li{
+nav ol li a{
     /*display: inline;
     list-style-type: none;
     padding-right: 3em;
     text-decoration: none;*/
+    color: #ECFF00 !important;
 }
 
 .activePage{
-
+    text-shadow: -.06em black;
 }
 /*****************     End NAV         *****************************/
 
@@ -63,21 +91,27 @@ nav ol li{
 /*SLIDER*/
 #slideShow{
     display: inherit !important;
+    margin: 0% 0% 1% 0%;
 }
 /*END of SLIDER*/
 /*****************     Begin FOOTER              ****************************/
 footer{
+/*    position: fixed;
+    bottom: 0;*/
+    position: relative;
+    width: 100%;
     clear: both;
     background-color: lightgray;
 }
 
 .fa {
-    padding: .2em;
-    font-size: 20px;
-    width: 2%;
+    padding: 1%;
+    font-size: 1.5em;
+    width: 4%;
     text-align: center;
     text-decoration: none;
-    border-radius: 20%;
+    border-radius: 100%;
+    margin: 1%;
 }
 
 .fa:hover {
@@ -87,6 +121,11 @@ footer{
 
 .fa-facebook {
     background: #3B5998;
+    color: white;
+}
+
+.fa-google {
+    background: #dd4b39;
     color: white;
 }
 
@@ -110,18 +149,54 @@ footer{
     color: white;
 }
 
+.fLogo{
+    padding: 10% 1%;
+}
 
+.divFooter{
+    margin: auto !important;
+}
+
+.fNav{
+    list-style-type: none;
+    padding-left: 0% !important;
+}
+
+.fNav li{
+    padding: 1%;
+    margin: .1%;
+}
 /*****************     End FOOTER              ****************************/
 
 /*****************     Begin SWAP                ****************************/     
+#frmRegister{
+    width: 55%;
+    margin: auto;
+    border: 1px solid lightblue;
+    border-radius: 1%;
+    padding: 2% 10%;
+}
 
+.frmLabel{
+    width: 20%;
+    text-align: left;
+    padding: 1%;
+}
+
+.hide{
+    visibility: hidden !important;
+}
 /*****************     End SWAP                ****************************/     
 
 /*****************     Begin TRINITY                ****************************/     
-#smallC{
-    width: 20%;
-    padding: 0.8%;
-    margin: 1% 0.5%;
+.smallC{
+    padding: 0.8% !important;
+    margin: 1% 1.2% !important;
+}
+
+.campus{
+    width: 90%;
+    margin: auto !important;
 }
 /*****************     End TRINITY                ****************************/     
 
@@ -135,4 +210,13 @@ footer{
 
 /*****************     Begin REDSTONE                ****************************/     
 
-/*****************     End REDSTONE                ****************************/     
+/*****************     End REDSTONE                ****************************/   
+
+
+figure{
+    margin: 0 !important;
+}
+
+main{
+    margin-bottom: 30%;
+}
