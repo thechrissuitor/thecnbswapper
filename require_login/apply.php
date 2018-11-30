@@ -353,27 +353,11 @@ if (isset($_POST["btnSubmit"])) {
 
         $message = '<h2>Your form results:</h2>';       
 
-        foreach ($_POST as $htmlName => $value) {
-            
-            $message .= '<p>';
-            $message .= 'Thank you for using The CNB Swapper. Your dorm has been posted.';
-            $message .= 'Please browse the market for rooms that interest you.';
-            $message .= 'You will be notified when a match is found.';
-            $message .= '</p>';
-            
-            // breaks up the form names into words. for example
-            // txtFirstName becomes First Name       
-            /*$camelCase = preg_split('/(?=[A-Z])/', substr($htmlName, 3));
-
-            foreach ($camelCase as $oneWord) {
-                $message .= $oneWord . ' ';
-            }
-    
-            $message .= ' = ' . htmlentities($value, ENT_QUOTES, "UTF-8") . '</p>';*/
-            
-            $message .= '</p>';
-
-        }
+        $message .= '<p>';
+        $message .= 'Thank you for using The CNB Swapper. Your dorm has been posted.';
+        $message .= 'Please browse the market for rooms that interest you.';
+        $message .= 'You will be notified when a match is found.';
+        $message .= '</p>';
         
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //
