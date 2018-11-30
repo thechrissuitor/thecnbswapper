@@ -26,5 +26,12 @@ function verifyPhone($testString) {
     $regex = '/^(?:1(?:[. -])?)?(?:\((?=\d{3}\)))?([2-9]\d{2})(?:(?<=\(\d{3})\))? ?(?:(?<=\d{3})[.-])?([2-9]\d{2})[. -]?(\d{4})(?: (?i:ext)\.? ?(\d{1,5}))?$/';
     return (preg_match($regex, $testString));
 }
+
+//This should allow alpha-numeric and punctuation
+//code from: https://stackoverflow.com/questions/11862129/regex-to-match-punctuation-and-alpha-numeric-characters
+function verifyComment($testString){
+    $regex = '/^[a-zA-Z0-9\s\p{P}]+$/';
+    return (preg_match($regex, $testString));
+}
 print PHP_EOL . '<!--  END include validation-functions -->' . PHP_EOL;
 ?>

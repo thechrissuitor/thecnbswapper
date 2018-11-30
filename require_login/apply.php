@@ -14,15 +14,16 @@ print  PHP_EOL . '<!-- SECTION: 1a. debugging setup -->' . PHP_EOL;
 // Normally i wrap this in a debug statement but for now i want to always
 // display it. when you first come to the form it is empty. when you submit the
 // form it displays the contents of the post array.
-// if ($debug){ 
-    print '<p>Post Array:<br></p><pre>';
+ if (DEBUG){ 
+    print '<p>Path Parts:</p><pre>';
     print_r($path_parts);
+    print '<p>Post Array:<br></p><pre>';
     print_r($_POST);
     print '</pre>';
     print '<p>Files Array:</p><pre>';
     print_r($_FILES);
     print '</pre>';
-// }
+ }
 
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
@@ -200,53 +201,54 @@ if (isset($_POST["btnSubmit"])) {
         $dormStyleERROR = true;    
     }
     
-    if (!verifyAlphaNum($description)) {
+    if (!verifyComment($description)) {
         $errorMsg[] = "Your comments appear to have unauthorized characters.";
         $descriptionERROR = true;
     }
     
-    if ($image == "") {
+    if ($image == "../images/user-dorm-images/") {
         $errorMsg[] = 'Please upload an image.';
         $imageERROR = true;
-    }
-    // code received from https://www.w3schools.com/php/php_file_upload.asp
-    $imageFileType = strtolower(pathinfo($image,PATHINFO_EXTENSION));
-    $uploadOk = 1;
-    // Check if image file is a actual image or fake image
-    $check = getimagesize($_FILES["imgImage"]["tmp_name"]);
-    if($check !== false) {
-        //echo "File is an image - " . $check["mime"] . ".";
-        $uploadOk = 1; // everythig is good
     } else {
-        $errorMsg[] =  "File is not an image.";
-        $imageERROR = true;
-        $uploadOk = 0;
-    }
-    
-    // Check file size
-    if ($_FILES["imgImage"]["size"] > 2000000) { //if greater than 2MB
-        $errorMsg[] = "Sorry, your file is too large. Must be less than 2MB";
-        $imageERROR = true;
-        $uploadOk = 0;
-    }
-    // Allow certain file formats
-    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-    && $imageFileType != "gif" ) {
-        $errorMsg[] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed. The image type is " . $imageFileType;
-        $imageERROR = true;
-        $uploadOk = 0;
-    }
-    // Check if $uploadOk is set to 0 by an error
-    if ($uploadOk == 0) {
-        $errorMsg[] = "Sorry, your image was not uploaded.";
-        $imageERROR = true;
-    // if everything is ok, try to upload file
-    } else {
-        if (move_uploaded_file($_FILES["imgImage"]["tmp_name"], $image)) {
-            //echo "The file ". basename($_FILES["imgImage"]["name"]). " has been uploaded.";
+        // code received from https://www.w3schools.com/php/php_file_upload.asp
+        $imageFileType = strtolower(pathinfo($image,PATHINFO_EXTENSION)); 
+        $uploadOk = 1;
+        // Check if image file is a actual image or fake image
+        $check = getimagesize($_FILES["imgImage"]["tmp_name"]); //returns true or false depending on if the file extension is that of an image
+        if($check !== false) {
+            //echo "File is an image - " . $check["mime"] . ".";
+            $uploadOk = 1; // everythig is good
         } else {
-            $errorMsg[] = "Sorry, there was an error uploading your image.";
+            $errorMsg[] =  "File is not an image.";
             $imageERROR = true;
+            $uploadOk = 0;
+        }
+
+        // Check file size
+        if ($_FILES["imgImage"]["size"] > 2000000) { //if greater than 2MB
+            $errorMsg[] = "Sorry, your file is too large. Must be less than 2MB";
+            $imageERROR = true;
+            $uploadOk = 0;
+        }
+        // Allow certain file formats
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif" ) {
+            $errorMsg[] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed. The image type is " . $imageFileType;
+            $imageERROR = true;
+            $uploadOk = 0;
+        }
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            $errorMsg[] = "Sorry, your image was not uploaded.";
+            $imageERROR = true;
+        // if everything is ok, try to upload file
+        } else {
+            if (move_uploaded_file($_FILES["imgImage"]["tmp_name"], $image)) { //moves uploaded image to the correct location. Returns true on success
+                //echo "The file ". basename($_FILES["imgImage"]["name"]). " has been uploaded.";
+            } else {
+                $errorMsg[] = "Sorry, there was an error uploading your image.";
+                $imageERROR = true;
+            }
         }
     }
     
@@ -341,23 +343,6 @@ if (isset($_POST["btnSubmit"])) {
             $dormUpdateDataRecord = $thisDatabaseWriter->insert($dormUpdateQuery, $dormUpdateDataRecord);
         }
     
-        // setup csv file
-        $myFolder = 'data/';
-        $myFileName = 'registration';
-        $fileExt = '.csv';
-        $filename = $myFolder . $myFileName . $fileExt;
-    
-        if ($debug) print PHP_EOL . '<p>filename is ' . $filename;
-    
-        // now we just open the file for append
-        $file = fopen($filename, 'a');
-    
-        // write the forms informations
-        fputcsv($file, $dataRecord);
-    
-        // close the file
-        fclose($file);       
-    
      
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //
@@ -366,20 +351,27 @@ if (isset($_POST["btnSubmit"])) {
         // build a message to display on the screen in section 3a and to mail
         // to the person filling out the form (section 2g).
 
-        $message = '<h2>Your  information.</h2>';       
+        $message = '<h2>Your form results:</h2>';       
 
         foreach ($_POST as $htmlName => $value) {
             
             $message .= '<p>';
+            $message .= 'Thank you for using The CNB Swapper. Your dorm has been posted.';
+            $message .= 'Please browse the market for rooms that interest you.';
+            $message .= 'You will be notified when a match is found.';
+            $message .= '</p>';
+            
             // breaks up the form names into words. for example
             // txtFirstName becomes First Name       
-            $camelCase = preg_split('/(?=[A-Z])/', substr($htmlName, 3));
+            /*$camelCase = preg_split('/(?=[A-Z])/', substr($htmlName, 3));
 
             foreach ($camelCase as $oneWord) {
                 $message .= $oneWord . ' ';
             }
     
-            $message .= ' = ' . htmlentities($value, ENT_QUOTES, "UTF-8") . '</p>';
+            $message .= ' = ' . htmlentities($value, ENT_QUOTES, "UTF-8") . '</p>';*/
+            
+            $message .= '</p>';
 
         }
         
@@ -393,12 +385,12 @@ if (isset($_POST["btnSubmit"])) {
         $cc = '';       
         $bcc = '';
 
-        $from = 'WRONG site <customer.service@your-site.com>';
+        $from = 'csuitor@uvm.edu';
 
         // subject of mail should make sense to your form
-        $subject = 'Groovy: ';
+        $subject = 'The CNB Swapper';
 
-        //$mailed = sendMail($to, $cc, $bcc, $from, $subject, $message);
+        $mailed = sendMail($to, $cc, $bcc, $from, $subject, $message);
 
     } // end form is valid     
 
@@ -484,6 +476,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                     <legend>Swap Information</legend>
                     
                     <?php
+                    //grab the username from the login
                     $username = htmlentities($_SERVER["REMOTE_USER"], ENT_QUOTES, "UTF-8");
                     ?>
                     <input id="hdnUserName" name="hdnUserName" type="hidden" value=<?php print $username; ?>>
@@ -534,22 +527,22 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                         <label class="required" for="radClassStanding">
                             <input type="radio" name="radClassStanding"
                                    tabindex = "160" 
-                                   <?php if($classStanding==="Freshman") print ' selected '; ?>
+                                   <?php if($classStanding==="Freshman") print ' checked '; ?>
                                    value="Freshman"> Freshman</label><br>
                         <label class="required" for="radClassStanding">
                             <input type="radio" name="radClassStanding"
                                    tabindex = "180"
-                                   <?php if($classStanding==="Sophomore") print ' selected '; ?>
+                                   <?php if($classStanding==="Sophomore") print ' checked '; ?>
                                    value="Sophomore"> Sophomore</label><br>
                         <label class="required" for="radClassStanding">
                             <input type="radio" name="radClassStanding"
                                    tabindex = "200"
-                                   <?php if($classStanding==="Junior") print ' selected '; ?>
+                                   <?php if($classStanding==="Junior") print ' checked '; ?>
                                    value="Junior"> Junior</label><br>
                         <label class="required" for="radClassStanding">
                             <input type="radio" name="radClassStanding"
                                    tabindex = "220"
-                                   <?php if($classStanding==="Senior") print ' selected '; ?>
+                                   <?php if($classStanding==="Senior") print ' checked '; ?>
                                    value="Senior"> Senior</label>
                     </p>
                     <p>Hall <br>
@@ -613,9 +606,9 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                     </p>  
                     <p>Comments:<br>
                     <textarea rows="4" cols="50" name="txtDescription"
-                              tabindex="320" placeholder="Enter comments here."
-                              value = "<?php print $description; ?>"
-                              form="frmApply"></textarea>
+                              tabindex="320" placeholder="Enter comments here." 
+                              maxlength="250" 
+                              form="frmApply"><?php print $description; ?></textarea>
                     </p>
                     <p>Upload a picture of your dorm:
                         <input type="file" name="imgImage" id="imgImage" tabindex="320">

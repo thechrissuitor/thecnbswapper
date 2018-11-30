@@ -57,7 +57,6 @@ $path_parts = pathinfo($phpSelf);
         $domain = '//';
         $server = htmlentities($_SERVER['SERVER_NAME'], ENT_QUOTES, 'UTF-8');
         $domain .= $server;
-        $debug = true;
         if ($debug) {
             print '<p>php Self: ' . $phpSelf;
             print '<pdomain: ' . $domain;
@@ -72,6 +71,9 @@ $path_parts = pathinfo($phpSelf);
         // 
         // %^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
         if ($path_parts['dirname'] == "/cs148/dev-final-project/require_login") {
+            
+            // WE HAVE TO USE IF-STATEMENTS FOR ANYTHING USING FILE PATHS BECAUSE
+            // WE HAVE FILES IN THE require_login FOLDER
 
             ?>
             
@@ -103,7 +105,7 @@ $path_parts = pathinfo($phpSelf);
         
             include '../lib/constants.php';
 
-            include LIB_PATH . '../lib/Connect-With-Database.php';
+            include LIB_PATH . '/Connect-With-Database.php';
 
             require_once '../lib/security.php';
 
