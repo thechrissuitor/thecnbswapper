@@ -70,7 +70,7 @@ $path_parts = pathinfo($phpSelf);
         // inlcude all libraries. 
         // 
         // %^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
-        if ($path_parts['dirname'] == "/cs148/dev-final-project/require_login") {
+        if ($path_parts['dirname'] == "/cs148/dev-final-project/require_login") { //if statement to change file paths for if a file is in the require_login folder
             
             // WE HAVE TO USE IF-STATEMENTS FOR ANYTHING USING FILE PATHS BECAUSE
             // WE HAVE FILES IN THE require_login FOLDER
@@ -116,7 +116,7 @@ $path_parts = pathinfo($phpSelf);
             print '<!-- libraries complete-->';
             
             
-        } else {
+        } else { //end if, start else
             
         ?>
             
@@ -158,7 +158,7 @@ $path_parts = pathinfo($phpSelf);
 
         print '<!-- libraries complete-->';
         
-        }
+        } //end else
         ?>	
 
     </head>
