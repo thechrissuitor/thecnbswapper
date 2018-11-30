@@ -17,58 +17,119 @@
             // designed to give the current page a class but also allows
             // you to have more classes if you need them
             /*Home*/
-            print '<li class="';
-            if ($path_parts['filename'] == "index") {
-                print ' activePage ';
-            }
-            print ' nav-item">';
-            print '<a class = "nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>';
-            print '</li>';
+            if ($path_parts['dirname'] == "/cs148/dev-final-project/require_login") {
+                
+                print '<li class="';
+                if ($path_parts['filename'] == "index") {
+                    print ' activePage ';
+                }
+                print ' nav-item">';
+                print '<a class = "nav-link" href="../index.php">Home <span class="sr-only">(current)</span></a>';
+                print '</li>';
 
-            /*Put your dorm on the market*/
-            print '<li class="';
-            if ($path_parts['filename'] == "apply") {
-                print ' activePage ';
-            }
-            print ' nav-item">';
-            print '<a class = "nav-link" href="apply.php">Create Request</a>';
-            print '</li>';
+                /*Put your dorm on the market*/
+                print '<li class="';
+                if ($path_parts['filename'] == "apply") {
+                    print ' activePage ';
+                }
+                print ' nav-item">';
+                print '<a class = "nav-link" href="apply.php">Create Request</a>';
+                print '</li>';
 
-            /*Trinity*/
-            print '<li class="';
-            if ($path_parts['filename'] == "trinity") {
-                print ' activePage ';
-            }
-            print ' nav-item">';
-            print '<a class = "nav-link" href="trinity.php">Trinity</a>';
-            print '</li>';
+                /*Trinity*/
+                print '<li class="';
+                if ($path_parts['filename'] == "trinity") {
+                    print ' activePage ';
+                }
+                print ' nav-item">';
+                print '<a class = "nav-link" href="../trinity.php">Trinity</a>';
+                print '</li>';
 
-            /*Central*/
-            print '<li class="';
-            if ($path_parts['filename'] == "central") {
-                print ' activePage ';
-            }
-            print ' nav-item">';
-            print '<a class = "nav-link" href="central.php">Central</a>';
-            print '</li>';
+                /*Central*/
+                print '<li class="';
+                if ($path_parts['filename'] == "central") {
+                    print ' activePage ';
+                }
+                print ' nav-item">';
+                print '<a class = "nav-link" href="../central.php">Central</a>';
+                print '</li>';
 
-            /*Athletics*/
-            print '<li class="';
-            if ($path_parts['filename'] == "athletic") {
-                print ' activePage ';
-            }
-            print ' nav-item">';
-            print '<a class = "nav-link" href="athletic.php">Athletics</a>';
-            print '</li>';
+                /*Athletics*/
+                print '<li class="';
+                if ($path_parts['filename'] == "athletic") {
+                    print ' activePage ';
+                }
+                print ' nav-item">';
+                print '<a class = "nav-link" href="../athletic.php">Athletics</a>';
+                print '</li>';
 
-            /*Redstone*/
-            print '<li class="';
-            if ($path_parts['filename'] == "redstone") {
-                print ' activePage ';
-            }
-            print ' nav-item">';
-            print '<a class = "nav-link" href="redstone.php">Redstone</a>';
-            print '</li>';
+                /*Redstone*/
+                print '<li class="';
+                if ($path_parts['filename'] == "redstone") {
+                    print ' activePage ';
+                }
+                print ' nav-item">';
+                print '<a class = "nav-link" href="../redstone.php">Redstone</a>';
+                print '</li>';
+                
+                
+            } else {
+                
+                
+                print '<li class="';
+                if ($path_parts['filename'] == "index") {
+                    print ' activePage ';
+                }
+                print ' nav-item">';
+                print '<a class = "nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>';
+                print '</li>';
+
+                /*Put your dorm on the market*/
+                print '<li class="';
+                if ($path_parts['filename'] == "apply") {
+                    print ' activePage ';
+                }
+                print ' nav-item">';
+                print '<a class = "nav-link" href="require_login/apply.php">Create Request</a>';
+                print '</li>';
+
+                /*Trinity*/
+                print '<li class="';
+                if ($path_parts['filename'] == "trinity") {
+                    print ' activePage ';
+                }
+                print ' nav-item">';
+                print '<a class = "nav-link" href="trinity.php">Trinity</a>';
+                print '</li>';
+
+                /*Central*/
+                print '<li class="';
+                if ($path_parts['filename'] == "central") {
+                    print ' activePage ';
+                }
+                print ' nav-item">';
+                print '<a class = "nav-link" href="central.php">Central</a>';
+                print '</li>';
+
+                /*Athletics*/
+                print '<li class="';
+                if ($path_parts['filename'] == "athletic") {
+                    print ' activePage ';
+                }
+                print ' nav-item">';
+                print '<a class = "nav-link" href="athletic.php">Athletics</a>';
+                print '</li>';
+
+                /*Redstone*/
+                print '<li class="';
+                if ($path_parts['filename'] == "redstone") {
+                    print ' activePage ';
+                }
+                print ' nav-item">';
+                print '<a class = "nav-link" href="redstone.php">Redstone</a>';
+                print '</li>';
+                
+                }
             ?>
         </ol>
     </div>
