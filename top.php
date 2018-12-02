@@ -29,8 +29,6 @@ $path_parts = pathinfo($phpSelf);
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<!-- End of Footer Icons -->
 
-        <link rel="stylesheet" href="css/custom.css" type="text/css" media="screen">
-
         <?php
         // %^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
         //
