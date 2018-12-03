@@ -47,7 +47,7 @@ if ($thisDatabaseReader->querySecurityOk($hallQuery, 0, 1)) {
     $hallRecords = $thisDatabaseReader->select($hallQuery, '');
 }
 // END dorm halls listbox
-$roomNumber = '';
+$roomNumber = "";
 $roommates = "";
 $dormStyle = "";
 $description = "";
@@ -201,7 +201,7 @@ if (isset($_POST["btnSubmit"])) {
         $dormStyleERROR = true;    
     }
     
-    if (!verifyComment($description)) {
+    if (!verifyAlphaNum($description)) {
         $errorMsg[] = "Your comments appear to have unauthorized characters.";
         $descriptionERROR = true;
     }
@@ -303,7 +303,7 @@ if (isset($_POST["btnSubmit"])) {
         //INSERT QUERY FOR TBLDORMS
         $dormInsertQuery = "INSERT INTO tblDorms SET fnkHallId = ?, ";
         $dormInsertQuery .= "fldRoomNumber = ?, fldRoommates = ?, ";
-        $dormInsertQuery .= "fldDormStyle = ?, fldDescription = ?, fnkImagePath = ?, ";
+        $dormInsertQuery .= "fldDormStyle = ?, fldDescription = ?, fnkImageId = ?, ";
         $dormInsertQuery .= "fnkStudentId = 0"; //placeholder value
         
         //SEND INSERT QUERY FOR TBLDORMS
@@ -353,27 +353,11 @@ if (isset($_POST["btnSubmit"])) {
 
         $message = '<h2>Your form results:</h2>';       
 
-        foreach ($_POST as $htmlName => $value) {
-            
-            $message .= '<p>';
-            $message .= 'Thank you for using The CNB Swapper. Your dorm has been posted.';
-            $message .= 'Please browse the market for rooms that interest you.';
-            $message .= 'You will be notified when a match is found.';
-            $message .= '</p>';
-            
-            // breaks up the form names into words. for example
-            // txtFirstName becomes First Name       
-            /*$camelCase = preg_split('/(?=[A-Z])/', substr($htmlName, 3));
-
-            foreach ($camelCase as $oneWord) {
-                $message .= $oneWord . ' ';
-            }
-    
-            $message .= ' = ' . htmlentities($value, ENT_QUOTES, "UTF-8") . '</p>';*/
-            
-            $message .= '</p>';
-
-        }
+        $message .= '<p>';
+        $message .= 'Thank you for using The CNB Swapper. Your dorm has been posted.';
+        $message .= 'Please browse the market for rooms that interest you.';
+        $message .= 'You will be notified when a match is found.';
+        $message .= '</p>';
         
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //
@@ -525,7 +509,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                     </p>
                     
                     <p>Hall <br>
-                        <select id="" 
+                        <select  
                                 name="lstHall" 
                                 tabindex="240" >
                             <?php
@@ -557,7 +541,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                                    placeholder = ""
                                    tabindex = "260"
                                    type = "text"
-                                   value = <?php print $roomNumber; ?>
+                                   value = "<?php print $roomNumber; ?>"
                             >
                     </p>
                     
@@ -588,23 +572,23 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                         </select></label>
                     </p>  
                     <p>Class Standing <br>
-                        <label class="required" for="radClassStanding">
-                            <input type="radio" name="radClassStanding"
+                        <label class="required" for="radFreshman">
+                            <input type="radio" id="radFreshman"  name="radClassStanding"
                                    tabindex = "160" 
                                    <?php if($classStanding==="Freshman") print ' checked '; ?>
                                    value="Freshman"> Freshman</label><br>
-                        <label class="required" for="radClassStanding">
-                            <input type="radio" name="radClassStanding"
+                        <label class="required" for="radSophomore">
+                            <input type="radio" id="radSophomore"  name="radClassStanding"
                                    tabindex = "180"
                                    <?php if($classStanding==="Sophomore") print ' checked '; ?>
                                    value="Sophomore"> Sophomore</label><br>
-                        <label class="required" for="radClassStanding">
-                            <input type="radio" name="radClassStanding"
+                        <label class="required" for="radJunior">
+                            <input type="radio" id="radJunior" name="radClassStanding"
                                    tabindex = "200"
                                    <?php if($classStanding==="Junior") print ' checked '; ?>
                                    value="Junior"> Junior</label><br>
-                        <label class="required" for="radClassStanding">
-                            <input type="radio" name="radClassStanding"
+                        <label class="required" for="radSenior">
+                            <input type="radio" id="radSenior"  name="radClassStanding"
                                    tabindex = "220"
                                    <?php if($classStanding==="Senior") print ' checked '; ?>
                                    value="Senior"> Senior</label>
@@ -612,8 +596,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                     <p>Comments:<br>
                     <textarea rows="4" cols="50" name="txtDescription"
                               tabindex="320" placeholder="Enter comments here." 
-                              maxlength="250" 
-                              form="frmApply"><?php print $description; ?></textarea>
+                              maxlength="250"><?php print $description; ?></textarea>
                     </p>
                     <p>Upload a picture of your dorm:
                         <input type="file" name="imgImage" id="imgImage" tabindex="320">
