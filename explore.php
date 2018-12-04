@@ -23,8 +23,8 @@ if ($thisDatabaseReader->querySecurityOk($query, 0)) {
                     $fullName = $record['fldFirstName'] . ' ' . $record['fldLastName']; //this is the student's full name (first and last)
                     //$theImg = str_replace('../', , subject)$record['fldImagePath']; // THIS IS A STRING. The image path (the location) of the image in the server
                     $theImg = substr($record["fldImagePath"], 3);
-                    print '<figure class="card mb-3">';
-                    print '<img class="card-imgage card-img-top" src="' . $theImg . '" alt="">';
+                    print '<figure class="row studentPost">';
+                    print '<img class="col-sm-6" src="' . $theImg . '" alt="">';
                     print '<article class="card-body">';
                     print '<h3>Post</h3>';
                     print '<p class= "card-text"> <strong> Name: </strong> '. $fullName .'<br>';

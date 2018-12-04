@@ -8,7 +8,7 @@
             <h4 class="">Links</h4>
             <ul class="fNav">
                 <li><a href="index.php">Home</a></li>
-                <li><a href="apply.php">Create Request</a></li>
+                <li><a href="require_login/apply.php">Create Request</a></li>
                 <li><a href="explore.php">Explore</a></li>
                 <li><a href="trinity.php">Trinity</a></li>
                 <li><a href="central.php">Central</a></li>
