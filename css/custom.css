@@ -212,6 +212,18 @@ footer{
 
 /*****************     End REDSTONE                ****************************/   
 
+/*****************     Begin EXPLORE                ****************************/     
+.card-imgage{
+    width: 550px;
+    height: 350px;
+    float: left;
+}
+
+.card{
+    display: inline !important;
+}
+/*****************     End EXPLORE                ****************************/   
+
 
 figure{
     margin: 0 !important;

@@ -6,7 +6,7 @@ include "top.php";
         <h2>Central Campus</h2>
         <article class="row campus">
 		<figure class="card smallC" id="">
-                <img class="card-img-top" src="images/ccrh.png" alt="Card image cap">
+                    <img class="card-img-top" src="images/central.jpeg" alt="Card image cap">
 	  			<figcaption class="container text-center">CCRH Hall</figcaption>
 		</figure>
 

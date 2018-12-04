@@ -1,7 +1,9 @@
 <!-- ######################     Main Navigation   ########################## -->
 <nav class="navbar sticky-top navbar-expand-lg navbar-light">
     <!-- When the page resizes for a dropdown button -->
-    <button class="navbar-toggler" type="button" 
+    <a href="index.php"><img src="images/logo.png" alt=""></a>
+    
+    <button class="navbar-toggler float-right" type="button" 
             data-toggle="collapse" data-target="#navbarNavDropdown" 
             aria-controls="navbarNavDropdown" aria-expanded="false" 
             aria-label="Toggle navigation">
@@ -18,7 +20,6 @@
             // you to have more classes if you need them
             /*Home*/
             if ($path_parts['dirname'] == "/cs148/dev-final-project/require_login") {
-                
                 print '<li class="';
                 if ($path_parts['filename'] == "index") {
                     print ' activePage ';
@@ -43,7 +44,7 @@
                     print ' activePage ';
                 }
                 print ' nav-item">';
-                print '<a class = "nav-link" href="explore.php">Explore</a>';
+                print '<a class = "nav-link" href="../explore.php">Explore</a>';
                 print '</li>';
 
                 /*Trinity*/
@@ -84,8 +85,6 @@
                 
                 
             } else {
-                
-                
                 print '<li class="';
                 if ($path_parts['filename'] == "index") {
                     print ' activePage ';
