@@ -3,15 +3,13 @@ include "top.php";
 $query = "SELECT pmkUserDormId, fldFirstName, fldLastName, fldClassStanding, ";
 $query .= "fldHall, fldDormStyle, fldRoomNumber, fldRoommates, fldDescription, ";
 $query .= "fldImagePath FROM tblDorms JOIN tblStudentInfo ON fnkStudentId = pmkStudentId ";
-$query .= "JOIN tblHalls ON fnkHallId = pmkHallId JOIN tblUserImages ON fnkImageId = pmkImageId";
+$query .= "JOIN tblHalls ON fnkHallId = pmkHallId JOIN tblUserImages ON fnkImageId = pmkImageId WHERE pmkUserDormId = ?";
 	
 $records = '';
-
 if ($thisDatabaseReader->querySecurityOk($query, 0)) {
     $query = $thisDatabaseReader->sanitizeQuery($query);
     $records = $thisDatabaseReader->select($query, '');
 }
-
 ?>
 
 
@@ -27,18 +25,16 @@ if ($thisDatabaseReader->querySecurityOk($query, 0)) {
                     print '<img class="col-sm-6" src="' . $theImg . '" alt="">';
                     print '<article class="card-body">';
                     print '<h3>Post</h3>';
-                    print '<p class= "card-text"> ';
+                    print '<p class= "card-text"> <strong> Name: </strong> '. $fullName .'<br>';
                     print '<strong> Hall: </strong>' . $record['fldHall'] . '<br>';
+                    print '<strong> Room Number: </strong>' . $record['fldRoomNumber'] .'<br>';
                     print '<strong> Dorm Style: </strong>' . $record['fldDormStyle'] . '<br>';
                     print '<strong> Description: </strong>' . $record['fldDescription'] . '<br>';
                     print '</p>';
-
-                    print '<p class= "float-right loveLink">Intereted in this dorm? <a  class = "btn-btn-primary" href="require_login/market-details.php?dormId=';
+                    print '<p class= "float-right loveLink">Intereted in this dorm? <a  class = "btn-btn-primary" href="market-details.php?dormId=';
                     print $record['pmkUserDormId'];
                     print '">Click Here!</a></p>';
                     print '</figure>';
-
-
 //			$record['fldClassStanding'] //this is the student's class standing (i.e. Sophomore)
 //			$record['fldHall'] //THIS IS A STRING. The name of the hall (i.e. McAuley)
 //			$record['fldDormStyle'] //this the style of their dorm (i.e. suite or traditional)
@@ -57,12 +53,3 @@ if ($thisDatabaseReader->querySecurityOk($query, 0)) {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
- ';
