@@ -263,13 +263,13 @@ footer{
 
 .studentPost img{
     height: 50%;
-    width: 50%;
+    width: 30%;
     max-width: 100% !important;
     flex:initial !important;
 }
 
 .loveLink{
-    margin: 6% 1% 0% !important;
+    margin: 10% 1% 0% !important;
 }
 /*****************     End EXPLORE                ****************************/   
 
