@@ -466,8 +466,8 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                     $username = htmlentities($_SERVER["REMOTE_USER"], ENT_QUOTES, "UTF-8");
                     ?>
                     <input id="hdnUserName" name="hdnUserName" type="hidden" value=<?php print $username; ?>>
-                    <p>
-                        <label class="required" for="txtFirstName">First Name</label>  
+                    <p class="row">
+                        <label class="required frmLabel" for="txtFirstName">First Name</label>  
                         <input autofocus
                                 <?php if ($firstNameERROR) print 'class="mistake"'; ?>
                                 id="txtFirstName"
@@ -481,8 +481,8 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                         >                    
                     </p>
                     
-                    <p>
-                        <label class = "required" for = "txtLastName">Last Name</label>
+                    <p class="row">
+                        <label class = "required frmLabel" for = "txtLastName">Last Name</label>
                             <input 
                                    <?php if ($emailERROR) print 'class="mistake"'; ?>
                                    id = "txtLastName"     
@@ -495,8 +495,8 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                                    value = "<?php print $lastName; ?>"
                             >
                     </p>
-                    <p>
-                        <label class = "required" for = "txtEmail">Email</label>
+                    <p class="row">
+                        <label class = "required frmLabel" for = "txtEmail">Email</label>
                             <input 
                                    <?php if ($emailERROR) print 'class="mistake"'; ?>
                                    id = "txtEmail"     
@@ -510,10 +510,10 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                             >
                     </p>
                     
-                    <p>Hall <br>
+                    <p class="row"><label class="frmLabel">Hall</label>
                         <select  
                                 name="lstHall" 
-                                tabindex="240" >
+                                tabindex="140" >
                             <?php
                             if (is_array($hallRecords)) {
                                 foreach ($hallRecords as $record) { 
@@ -532,8 +532,8 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                     </p>
                     
                     
-                    <p>
-                        <label class = "required" for = "txtRoomNumber">Room Number</label>
+                    <p class="row">
+                        <label class = "required frmLabel" for = "txtRoomNumber">Room Number</label>
                             <input 
                                    <?php if ($roomNumberERROR) print 'class="mistake"'; ?>
                                    id = "txtRoomNumber"     
@@ -541,66 +541,72 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                                    name = "txtRoomNumber"
                                    onfocus = "this.select()"
                                    placeholder = ""
-                                   tabindex = "260"
+                                   tabindex = "140"
                                    type = "text"
                                    value = "<?php print $roomNumber; ?>"
                             >
                     </p>
                     
-                    <p>
-                       <label for="lstDormStyle">Dorm Style
+                    <p class="row">
+                        <label for="lstDormStyle" class="frmLabel">Dorm Style</label>
                         <select id="lstDormStyle"
                                 name="lstDormStyle"
-                                tabindex="300" >
+                                tabindex="140" >
                             <option value="Traditional" 
                                 <?php if($dormStyle==="Traditional") print ' selected '; ?>
                                     >Traditional</option>
                             <option value="Suite"
                                 <?php if($dormStyle==="Suite") print ' selected '; ?>
                                     >Suite</option>                     
-                        </select></label>
+                        </select>
                     </p>
                     
-                    <p>
-                       <label for="lstRoommates">Roommates
+                    <p class="row">
+                        <label for="lstRoommates" class="frmLabel">Roommates</label>
                         <select id="lstRoommates"
                                 name="lstRoommates"
-                                tabindex="280" >
+                                tabindex="140" >
                             <option value="0" <?php if($roommates==0) print ' selected '; ?>>0</option>
                             <option value="1" <?php if($roommates==1) print ' selected '; ?>>1</option>
                             <option value="2" <?php if($roommates==2) print ' selected '; ?>>2</option>
                             <option value="3" <?php if($roommates==3) print ' selected '; ?>>3</option>
 
-                        </select></label>
+                        </select>
                     </p>  
-                    <p>Class Standing <br>
-                        <label class="required" for="radFreshman">
+                    <p class="row"> <br>
+                        <label class="required frmLabel" for="radFreshman">Class Standing</label>
                             <input type="radio" id="radFreshman"  name="radClassStanding"
-                                   tabindex = "160" 
+                                   tabindex = "140" 
                                    <?php if($classStanding==="Freshman") print ' checked '; ?>
-                                   value="Freshman"> Freshman</label><br>
-                        <label class="required" for="radSophomore">
+                                   value="Freshman"><span class="radText">Freshman</span>
+                    </p>
+                    <p class="row">
+                            <label class="required frmLabel hide" for="radSophomore"> Class Standing </label>
                             <input type="radio" id="radSophomore"  name="radClassStanding"
                                    tabindex = "180"
                                    <?php if($classStanding==="Sophomore") print ' checked '; ?>
-                                   value="Sophomore"> Sophomore</label><br>
-                        <label class="required" for="radJunior">
+                                   value="Sophomore"><span class="radText">Sophomore</span>
+                    </p>
+                    <p class="row">
+                            <label class="required frmLabel hide" for="radJunior">Class Standing </label>
                             <input type="radio" id="radJunior" name="radClassStanding"
                                    tabindex = "200"
                                    <?php if($classStanding==="Junior") print ' checked '; ?>
-                                   value="Junior"> Junior</label><br>
-                        <label class="required" for="radSenior">
+                                   value="Junior"><span class="radText">Junior</span>
+                    </p>
+                    <p class="row">
+                        <label class="required frmLabel hide" for="radSenior">Class Standing </label>
                             <input type="radio" id="radSenior"  name="radClassStanding"
                                    tabindex = "220"
                                    <?php if($classStanding==="Senior") print ' checked '; ?>
-                                   value="Senior"> Senior</label>
+                                   value="Senior"><span class="radText">Senior</span>
                     </p>
-                    <p>Comments:<br>
-                    <textarea rows="4" cols="50" name="txtDescription"
+                    <p>Comments:</p>
+                    <textarea class="textArea" name="txtDescription"
                               tabindex="320" placeholder="Enter comments here." 
                               maxlength="250"><?php print $description; ?></textarea>
-                    </p>
-                    <p>Upload a picture of your dorm:
+                    
+                    <p class="row imgUpload">Upload a picture of your dorm:
                         <input type="file" name="imgImage" id="imgImage" tabindex="320">
                     </p>
                 </fieldset> <!-- ends contact -->

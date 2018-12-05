@@ -20,6 +20,7 @@ if ($thisDatabaseReader->querySecurityOk($query, 0)) {
 	<?php
 	if (is_array($records)) {
             foreach($records as $record) {
+                    $dormId = $record['pmkUserDormId'];
                     $fullName = $record['fldFirstName'] . ' ' . $record['fldLastName']; //this is the student's full name (first and last)
                     //$theImg = str_replace('../', , subject)$record['fldImagePath']; // THIS IS A STRING. The image path (the location) of the image in the server
                     $theImg = substr($record["fldImagePath"], 3);
@@ -32,9 +33,8 @@ if ($thisDatabaseReader->querySecurityOk($query, 0)) {
                     print '<strong> Dorm Style: </strong>' . $record['fldDormStyle'] . '<br>';
                     print '<strong> Description: </strong>' . $record['fldDescription'] . '<br>';
                     print '</p>';
-
                     print '<p class= "float-right loveLink">Intereted in this dorm? <a  class = "btn-btn-primary" href="require_login/market-details.php?dormId=';
-                    print $record['pmkUserDormId'];
+                    print $dormId;
                     print '">Click Here!</a></p>';
                     print '</figure>';
 

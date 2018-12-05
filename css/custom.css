@@ -194,6 +194,7 @@ footer{
     width: 20%;
     text-align: left;
     padding: 1%;
+    margin:  0% 10% 0% 0%;
 }
 
 .hide{
@@ -210,6 +211,20 @@ footer{
 .campus{
     width: 90%;
     margin: auto !important;
+}
+
+.textArea{
+    width: 100%;
+    max-width: 100%;
+}
+
+.radText{
+    padding: .9%;
+}
+
+.imgUpload{
+    margin: 2% 0% !important;
+    font-size: 1.7em;
 }
 /*****************     End TRINITY                ****************************/     
 
