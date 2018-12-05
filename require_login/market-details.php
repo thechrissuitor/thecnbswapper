@@ -325,7 +325,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
 <form action = "<?php print $phpSelf; ?>"
           id = "frmRegister"
           method = "post">
-                <fieldset class = "contact">
+                <fieldset class = "contact text-center">
                     <legend>Send Your Request!</legend>
                     <input id="hdnUserame" name="hdnUsername" type="hidden" value=<?php print $username; ?>>
                     <input id="hdnDormId" name="hdnDormId" type="hidden" value=<?php print $dormId; ?>>
@@ -334,9 +334,9 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                     <input id="hdnStudentTwoDorm" name="hdnStudentTwoDorm" type="hidden" value=<?php print $studentTwoDorm; ?>>
                 </fieldset> <!-- ends contact -->
 
-            <fieldset class="buttons">
+            <fieldset class="buttons text-center">
                 <legend></legend>
-                <input class = "button" id = "btnSwap" name = "btnSwap" tabindex = "900" type = "submit" value = "Swap" >
+                <input class = "btn btn-success" role="button" id = "btnSwap" name = "btnSwap" tabindex = "900" type = "submit" value = "Swap" >
             </fieldset> <!-- ends buttons -->
 </form>     
 <?php
