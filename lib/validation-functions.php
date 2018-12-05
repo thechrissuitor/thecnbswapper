@@ -28,7 +28,7 @@ function verifyPhone($testString) {
 }
 
 //This should allow alpha-numeric and punctuation
-//code from: https://stackoverflow.com/questions/11862129/regex-to-match-punctuation-and-alpha-numeric-characters
+//code from: https://stackoverflow.com/questions/7233447/a-regex-to-match-strings-with-alphanumeric-spaces-and-punctuation/7233549
 function verifyComment($testString){
     $regex = '/[A-Za-z0-9 _.,!?\"\'\/$]+/';
     return (preg_match($regex, $testString));
