@@ -29,13 +29,9 @@ include "top.php";
         
         <figure class="card smallC" id="">
             <img class="card-img-top" src="images/hunt.JPG" alt="Card image cap">
-			<figcaption class="container text-center">Hunt Hall</figcaption>
+			<figcaption class="container text-center">Simpson Hall</figcaption>
 		</figure>
 
-        <figure class="card smallC" id="">
-            <img class="card-img-top" src="images/simpson" alt="Card image cap">
-            <figcaption class="container text-center">Simpson Hall</figcaption>
-		</figure>
 
         <figure class="card smallC" id="">
             <img class="card-img-top" src="images/wilks.jpg" alt="Card image cap">

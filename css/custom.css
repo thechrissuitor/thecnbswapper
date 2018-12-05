@@ -14,6 +14,19 @@
     padding: 0 !important;
 }*/
 
+*{
+    font-family: "Palatino Linotype", Times, serif;
+}
+
+h2{
+    font-weight: bolder;
+    text-align: center;
+    
+}
+
+figcaption{
+    font-family: "Copperplate Gothic Light Font", Times, serif;
+}
 html{
     height: 100%;
 }
@@ -211,6 +224,39 @@ footer{
 /*****************     Begin REDSTONE                ****************************/     
 
 /*****************     End REDSTONE                ****************************/   
+
+/*****************     Begin EXPLORE                ****************************/     
+.card-imgage{
+    width: 550px;
+    height: 350px;
+    float: left;
+}
+
+.card{
+    display: inline !important;
+}
+
+.studentPost{
+    margin: 3% 2% !important;
+    border: solid 3px yellowgreen;
+    padding: 1%;
+    border-radius: 0.3em;
+    box-shadow: 4px 4px yellow;
+    display: flex;
+    flex-wrap: initial;
+}
+
+.studentPost img{
+    height: 50%;
+    width: 50%;
+    max-width: 100% !important;
+    flex:initial !important;
+}
+
+.loveLink{
+    margin: 6% 1% 0% !important;
+}
+/*****************     End EXPLORE                ****************************/   
 
 
 figure{
