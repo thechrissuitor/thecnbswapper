@@ -79,12 +79,12 @@ $username = htmlentities($_SERVER["REMOTE_USER"], ENT_QUOTES, "UTF-8");
 // GRAB THE INFORMATION FOR THE CURRENT STUDENT
 $studentOneId = '';
 // SELECT QUERY TO GRAB CURRENT USER'S ID
-$userOneQuery = "SELECT pmkStudentId FROM tblStudentInfo WHERE fldNetIdUsername LIKE '" . $username . "'";
-
+$userOneQuery = "SELECT pmkStudentId FROM tblStudentInfo WHERE fldNetIdUsername LIKE ?";
+$queryData[] = $username;
 // SEND SELECT QUERY
-if ($thisDatabaseReader->querySecurityOk($userOneQuery, 1, 0, 2, 0, 0)) {
-    //$userOneQuery = $thisDatabaseReader->sanitizeQuery($userOneQuery);
-    $userOneId = $thisDatabaseReader->select($userOneQuery, '');
+if ($thisDatabaseWriter->querySecurityOk($userOneQuery, 1, 0, 0, 0, 0)) {
+    $userOneQuery = $thisDatabaseReader->sanitizeQuery($userOneQuery);
+    $userOneId = $thisDatabaseWriter->select($userOneQuery, $queryData);
 }
 if(is_array($userOneId)){
     foreach($userOneId as $userOne){
