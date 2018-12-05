@@ -30,7 +30,7 @@ function verifyPhone($testString) {
 //This should allow alpha-numeric and punctuation
 //code from: https://stackoverflow.com/questions/11862129/regex-to-match-punctuation-and-alpha-numeric-characters
 function verifyComment($testString){
-    $regex = '/^[a-zA-Z0-9\s\p{P}]+$/';
+    $regex = '/[A-Za-z0-9 _.,!?\"\'\/$]+/';
     return (preg_match($regex, $testString));
 }
 print PHP_EOL . '<!--  END include validation-functions -->' . PHP_EOL;
