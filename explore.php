@@ -33,7 +33,7 @@ if ($thisDatabaseReader->querySecurityOk($query, 0)) {
                     print '<strong> Dorm Style: </strong>' . $record['fldDormStyle'] . '<br>';
                     print '<strong> Description: </strong>' . $record['fldDescription'] . '<br>';
                     print '</p>';
-                    print '<p class= "float-right loveLink">Intereted in this dorm? <a  class = "btn-btn-primary" href="require_login/market-details.php?dormId=';
+                    print '<p class= "float-right loveLink">Intereted in this dorm? <a  class = "btn btn-primary" role = "button" href="require_login/market-details.php?dormId=';
                     print $dormId;
                     print '">Click Here!</a></p>';
                     print '</article>';
