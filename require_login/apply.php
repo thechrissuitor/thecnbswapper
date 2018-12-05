@@ -201,7 +201,9 @@ if (isset($_POST["btnSubmit"])) {
         $dormStyleERROR = true;    
     }
     
-    if (!verifyAlphaNum($description)) {
+    if ($description == ""){
+        // ignore this. The comments section
+    } elseif (!verifyComment($description)) {
         $errorMsg[] = "Your comments appear to have unauthorized characters.";
         $descriptionERROR = true;
     }
