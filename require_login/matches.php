@@ -21,11 +21,11 @@ if(is_array($userId)){
 }
 
 // SELECT QUERY FOR TBLREQUEST TO GET MATCHES
-$matchingQuery = 'SELECT pmkRequestId, fnkDormIdRequested FROM tblRequest WHERE fnkStudentID IN (SELECT fnkOtherStudentId FROM tblRequest) AND fnkStudentID = ' . $studentId;
+$matchingQuery = 'SELECT fnkDormIdRequested FROM tblRequest WHERE fnkStudentID = ' . $studentId . ' AND fnkStudentID IN (SELECT fnkOtherStudentId FROM tblRequest WHERE fnkOtherStudentId = ' . $studentId . ')';
 
 $matchingRecords = '';
 // SEND SELECT QUERY
-if ($thisDatabaseReader->querySecurityOk($matchingQuery, 1, 1)) {
+if ($thisDatabaseReader->querySecurityOk($matchingQuery, 2, 1)) {
     $matchingQuery = $thisDatabaseReader->sanitizeQuery($matchingQuery);
     $matchingRecords = $thisDatabaseReader->select($matchingQuery, '');
 }
@@ -49,7 +49,7 @@ foreach($dormId as $id){
         $displayQuery .= 'pmkUserDormId = ' . $id . ' OR '; // we do this for each id in $dormId to display the correct matches
         $conditionsCount++;
 }
-$displayQuery = substr($displayQuery, 0, -5); // strip the final " AND "
+$displayQuery = substr($displayQuery, 0, -4); // strip the final " AND "
 
 $displayRecords = '';
 // SEND QUERY
@@ -57,6 +57,8 @@ if ($thisDatabaseReader->querySecurityOk($displayQuery, 1, $conditionsCount-1)) 
     $displayQuery = $thisDatabaseReader->sanitizeQuery($displayQuery);
     $displayRecords = $thisDatabaseReader->select($displayQuery, '');
 }
+$test0 = $thisDatabaseWriter->testSecurityQuery($matchingQuery, 2, 1);
+$test = $thisDatabaseWriter->testSecurityQuery($displayQuery, 1, $conditionsCount-1);
 ?>
 
 <main>
