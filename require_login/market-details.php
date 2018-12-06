@@ -230,13 +230,14 @@ if (isset($_POST["btnSwap"])) {
         // build a message to display on the screen in section 3a and to mail
         // to the person filling out the form (section 2g).
 
-        $message = '<h2>Swap Request</h2>';       
+        $message = '<h2>Thank you for using the CNB Swapper.</h2>';       
 
             
             $message .= '<p>';
-            $message .= 'Ben, you need to type a message here.';
-            $message .= ' Thank the consumer or something.';
+            $message .= ' We are working diligently to put you in your desired dorm ';
             $message .= '</p>';
+            
+            $message .= '<p><a class = "submission-reset-link" href="../explore.php">Keep Exploring</a></p>';
 
         
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -277,7 +278,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
     // to display the form.
     
     if (isset($_POST["btnSwap"]) AND empty($errorMsg)) { // closing of if marked with: end body submit
-        print '<h2>Your Request Has Been Sent</h2>';
+        print '<h2>Your Swap Request Has Been Sent.</h2>';
     
         print $message;
     } else {       
