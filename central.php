@@ -14,7 +14,9 @@ include "top.php";
 		</figure>
 
 		<figure class="card smallC view overlay" id="">
-                    <img class="card-img-top" src="images/converse.JPG" alt="Card image cap">
+
+          <img class="card-img-top" src="images/converse.JPG" alt="Card image cap">
+
 	  			<figcaption class="container text-center">Converse Hall</figcaption>
                                 <article class="mask flex-center rgba-personal-strong">
                             <p class="white-text">Centrally located. Very close to Central Campus Dining Hall</p>
