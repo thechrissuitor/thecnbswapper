@@ -9,7 +9,7 @@ include "top.php";
                     <img class="card-img-top" src="images/central.jpeg" alt="Card image cap">
 	  			<figcaption class="container text-center">CCRH Hall</figcaption>
                                 <article class="mask flex-center rgba-personal-strong">
-                            <p class="white-text">Home of the Dhope</p>
+                            <p class="white-text">Brand new, perfectly located. Connected to Central Campus Dining Hall</p>
                         </article>
 		</figure>
 
@@ -17,7 +17,7 @@ include "top.php";
                     <img class="card-img-top" src="images/converse.jpeg" alt="Card image cap">
 	  			<figcaption class="container text-center">Converse Hall</figcaption>
                                 <article class="mask flex-center rgba-personal-strong">
-                            <p class="white-text">Home of the Dhope</p>
+                            <p class="white-text">Centrally located. Very close to Central Campus Dining Hall</p>
                         </article>
 		</figure>
 	</article>
