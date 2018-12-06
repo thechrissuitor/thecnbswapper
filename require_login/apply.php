@@ -357,9 +357,10 @@ if (isset($_POST["btnSubmit"])) {
 
         $message .= '<p>';
         $message .= 'Thank you for using The CNB Swapper. Your dorm has been posted.';
-        $message .= 'Please browse the market for rooms that interest you.';
-        $message .= 'You will be notified when a match is found.';
+        $message .= ' Please browse the market for rooms that interest you.';
+        $message .= ' You will be notified when a match is found.';
         $message .= '</p>';
+        $message .= '<p><a class = "submission-reset-link" href="../explore.php">Keep Exploring</a></p>';
         
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //
