@@ -3,6 +3,7 @@ include '../top.php';
 // GRAB THE INFORMATION FOR THE CURRENT STUDENT
 $studentId = '';
 $currentStudentDormId = '';
+$username = htmlentities($_SERVER["REMOTE_USER"], ENT_QUOTES, "UTF-8");
 // SELECT QUERY TO GRAB CURRENT USER'S ID
 $userQuery = "SELECT pmkStudentId, fnkDormId, fldEmail FROM tblStudentInfo WHERE fldNetIdUsername LIKE ?";
 $queryData[] = $username;
@@ -33,35 +34,29 @@ if ($thisDatabaseReader->querySecurityOk($matchingQuery, 1, 1)) {
 $dormId = array();
 if(is_array($matchingRecords)){
     foreach($matchingRecords as $record){
-	    if($currentStudentDormId == $record['fnkDormIdRequested']){ // we do not want the user to match with themself, so we filter their own posting out
+	    if($currentStudentDormId != $record['fnkDormIdRequested']){ // we do not want the user to match with themself, so we filter their own posting out
 		$dormId[] = $record['fnkDormIdRequested'];
 	}
     }
 }
 
 // SELECT QUERY TO DISPLAY MATCHES
-$displayQuery = 'SELECT fldFirstName, fldLastName, fldEmail, fldClassStanding, fldHall, fldDormStyle, fldRoomNumber, fldRoommates, fldDescription, fldImagePath FROM tblDorms JOIN tblStudentInfo ON fnkStudentId = pmkStudentId JOIN tblHalls ON fnkHallId = pmkHallId JOIN tblUserImages ON fnkImageId = pmkImageId WHERE pmkUserDormId =';
+$displayQuery = 'SELECT fldFirstName, fldLastName, fldEmail, fldClassStanding, fldHall, fldDormStyle, fldRoomNumber, fldRoommates, fldDescription, fldImagePath FROM tblDorms JOIN tblStudentInfo ON fnkStudentId = pmkStudentId JOIN tblHalls ON fnkHallId = pmkHallId JOIN tblUserImages ON fnkImageId = pmkImageId WHERE ';
 
 // in order to pass security we have to keep track of the conditions
 $conditionsCount = 0; 
-if(is_arrary($dormId)){
-	foreach($dormId as $id){
-		$displayQuery .= 'pmkUserDormId = ' . $id . ' AND '; // we do this for each id in $dormId to display the correct matches
-		$conditionsCount++;
-	}
+foreach($dormId as $id){
+        $displayQuery .= 'pmkUserDormId = ' . $id . ' OR '; // we do this for each id in $dormId to display the correct matches
+        $conditionsCount++;
 }
-
 $displayQuery = substr($displayQuery, 0, -5); // strip the final " AND "
 
 $displayRecords = '';
 // SEND QUERY
-if ($thisDatabaseReader->querySecurityOk($displayQuery, 1, $conditionsCount)) {
+if ($thisDatabaseReader->querySecurityOk($displayQuery, 1, $conditionsCount-1)) { // we subtract 1 because of the striped AND
     $displayQuery = $thisDatabaseReader->sanitizeQuery($displayQuery);
     $displayRecords = $thisDatabaseReader->select($displayQuery, '');
 }
-print '<p><pre>';
-print_r($displayRecords);
-print '</pre></p>';
 ?>
 
 <main>
@@ -70,7 +65,7 @@ print '</pre></p>';
 if(is_array($displayRecords)){
     foreach($displayRecords as $displayRecord){
         $fullName = $displayRecord['fldFirstName'] . ' ' . $displayRecord['fldLastName'];
-        $theImg = substr($displayRecord["fldImagePath"], 3);
+        $theImg = $displayRecord["fldImagePath"];
         print '<figure class="row matchInfo">';
         print '<img class="col-sm-6" src="' . $theImg . '" alt="">';
         print '<article class="card-body">';
