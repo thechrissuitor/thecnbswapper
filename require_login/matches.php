@@ -77,10 +77,11 @@ if(is_array($displayRecords)){
         print '<strong> Hall: </strong>' . $displayRecord['fldHall'] . '<br>';
         print '<strong>Room Number: </strong>' . $displayRecord['fldRoomNumber'] . '<br>'; 
         print '<strong> Dorm Style: </strong>' . $displayRecord['fldDormStyle'] . '<br>';
-        print '<strong>Roommates: </stong>' .$displayRecord['fldRoommates'] . '<br>';
+        print '<strong>Roommates: </strong>' .$displayRecord['fldRoommates'] . '<br>';
         print '<strong> Description: </strong>' . $displayRecord['fldDescription'] . '<br>';
         print '</p>';
-        print '<p class= "float-right loveLink">Ready to take the next step? <a  class = "btn btn-primary" data-toggle = "modal" data-target = "#sendMessage" data-whatever = "';
+        print '<p class= "float-right loveLink">Ready to take the next step? ';
+        print '<a  class = "btn btn-primary" data-toggle = "modal" data-target = "#exampleModal" data-whatever = "';
         print $displayRecord['fldEmail'];
         print '" role = "button" href="#';
         //print $dormId;
@@ -104,14 +105,12 @@ if(is_array($displayRecords)){
                 
                 
 	}
-}
-?>
-    
-    <section class="modal fade" id="sendMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        ?>
+<section class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <figure class="modal-dialog" role="document">
       <figure class="modal-content">
         <article class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+          <h5 class="modal-title" id="exampleModalLabel">New message to <?php $displayRecord['fldEmail']?></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -137,6 +136,11 @@ if(is_array($displayRecords)){
       </figure>
     </figure>
   </section>
+    <?php
+    }
+?>
+    
+    
 </main>
 
 <?php include '../footer.php'; ?>
