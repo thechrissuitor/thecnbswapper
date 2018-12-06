@@ -1,8 +1,18 @@
 <!-- ######################     Footer  #################################### -->
 <footer class="footer navbar-fixed-bottom">
-    <div class="row divFooter">
+    <section class="row divFooter">
         <figure class="col-sm-4 text-center">
+            <?php
+            if ($path_parts['dirname'] == "/cs148/dev-final-project/require_login") {
+            ?>
+            <img class="fLogo" src="../images/fLogo.png" alt="">
+            <?php
+            }else{
+            ?>
             <img class="fLogo" src="images/fLogo.png" alt="">
+            <?php
+            }
+            ?>
         </figure>
         <article class="col-sm-4 text-center">
             <h4 class="">Links</h4>
@@ -19,10 +29,17 @@
         
         <article class="col-sm-4">
             <h4 class="text-center">About CNB Swapper</h4>
-            <p>The CNB Swapper is web application designed for UVM underclassmen to swap dorms with another student on campus. The student fills out our form application, and their application is sent to our explore page. From here, users can view all swap postings. If they see a dorm they would be interested in swapping into, they can select that dorm and request a swap. For a match to be made, the two users have to request each other's posting. When that occurs, an email message is sent to both users notifying them that a match has been made.
-</p>
+            <p class="">The CNB Swapper is web application designed for UVM underclassmen
+                to swap dorms with another student on campus. The student fills 
+                out our form application, and their application is sent to our 
+                explore page. From here, users can view all swap postings. 
+                If they see a dorm they would be interested in swapping into, 
+                they can select that dorm and request a swap. For a match to be 
+                made, the two users have to request each other's posting. 
+                When that occurs, an email message is sent to both users 
+                notifying them that a match has been made.</p>
         </article>
-    </div>
+    </section>
 	<hr>
  	<figure class="row">
             <p>Contact Us:</p>
