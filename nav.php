@@ -81,7 +81,7 @@
                     print ' activePage ';
                 }
                 print ' nav-item">';
-                print '<a class = "nav-link" href="../athletic.php">Athletic</a>';
+                print '<a class = "nav-link" href="../athletic.php">Athletics</a>';
                 print '</li>';
 
                 /*Redstone*/

@@ -5,11 +5,11 @@
             <?php
             if ($path_parts['dirname'] == "/cs148/dev-final-project/require_login") {
             ?>
-            <img class="fLogo" src="../images/fLogo.png" alt="">
+                <img class="fLogo" src="../images/fLogo.png" alt="">
             <?php
             }else{
             ?>
-            <img class="fLogo" src="images/fLogo.png" alt="">
+                <img class="fLogo" src="images/fLogo.png" alt="">
             <?php
             }
             ?>
