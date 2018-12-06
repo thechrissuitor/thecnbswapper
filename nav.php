@@ -1,8 +1,18 @@
 <!-- ######################     Main Navigation   ########################## -->
 <nav class="navbar sticky-top navbar-expand-lg navbar-light">
     <!-- When the page resizes for a dropdown button -->
+    <?php
+    if ($path_parts['dirname'] == "/cs148/dev-final-project/require_login") {
+    ?>
+    <a href="index.php"><img src="../images/logo.png" alt=""></a>
+    <?php
+    }  else {
+    ?>
     <a href="index.php"><img src="images/logo.png" alt=""></a>
+    <?php
+    }
     
+    ?>
     <button class="navbar-toggler float-right" type="button" 
             data-toggle="collapse" data-target="#navbarNavDropdown" 
             aria-controls="navbarNavDropdown" aria-expanded="false" 
@@ -71,7 +81,7 @@
                     print ' activePage ';
                 }
                 print ' nav-item">';
-                print '<a class = "nav-link" href="../athletic.php">Athletic</a>';
+                print '<a class = "nav-link" href="../athletic.php">Athletics</a>';
                 print '</li>';
 
                 /*Redstone*/
