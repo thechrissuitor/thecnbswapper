@@ -82,9 +82,8 @@ if(!empty($displayRecords)){
             print '<strong> Description: </strong>' . $displayRecord['fldDescription'] . '<br>';
             print '</p>';
             print '<p class= "float-right loveLink">Ready to take the next step? ';
-            print '<a  class = "btn btn-primary" data-toggle = "modal" data-target = "#exampleModal" data-whatever = "';
-            print $displayRecord['fldEmail'];
-            print '" role = "button" href="#';
+            print '<a  class = "btn btn-primary" ';
+            print '" role = "button" href="mailto:'. $displayRecord['fldEmail'] ;
             //print $dormId;
             print '">Accept!</a></p>';
             print '</article>';
