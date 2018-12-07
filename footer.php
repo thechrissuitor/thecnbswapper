@@ -73,5 +73,5 @@
                 <a href="https://linkedin.com" class="fa fa-linkedin"></a>
                 <a href="https://google.com" class="fa fa-google"></a>
 	</figure>
-        <span>&COPY Copyrights. All Rights Reserved</span>
+        <span>&COPY; Copyrights. All Rights Reserved</span>
 </footer>
