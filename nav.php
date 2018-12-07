@@ -112,7 +112,7 @@
                 print '<a class = "nav-link" href="require_login/apply.php">Create Request</a>';
                 print '</li>';
                 
-                /*Explre*/
+                /*Explre page*/
                 print '<li class="';
                 if ($path_parts['filename'] == "explore") {
                     print ' activePage ';
