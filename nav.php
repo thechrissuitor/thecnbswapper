@@ -3,15 +3,10 @@
     <!-- When the page resizes for a dropdown button -->
     <?php
     if ($path_parts['dirname'] == "/cs148/dev-final-project/require_login") {
-    ?>
-    <a href="../index.php"><img src="../images/logo.png" alt=""></a>
-    <?php
+    print '<a href="../index.php"><img src="../images/logo.png" alt=""></a>';
     }  else {
-    ?>
-    <a href="index.php"><img src="images/logo.png" alt=""></a>
-    <?php
-    }
-    
+    print '<a href="index.php"><img src="images/logo.png" alt=""></a>';
+    } 
     ?>
     <button class="navbar-toggler float-right" type="button" 
             data-toggle="collapse" data-target="#navbarNavDropdown" 
