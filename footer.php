@@ -4,7 +4,7 @@
         <h3 class="hide">f</h3>
         <figure class="col-sm-3 text-center">
             <?php
-            if ($path_parts['dirname'] == "/cs148/dev-final-project/require_login") {
+            if ($path_parts['dirname'] == "/cs148/thecnbswapper/require_login") {
             ?>
                 <img class="fLogo" src="../images/fLogo.png" alt="">
             <?php
@@ -19,7 +19,7 @@
             <h4 class="">Links</h4>
             <ul class="fNav">
                 <?php
-                if ($path_parts['dirname'] == "/cs148/dev-final-project/require_login") {
+                if ($path_parts['dirname'] == "/cs148/thecnbswapper/require_login") {
                     print '<li><a href="../index.php">Home</a></li>';
                     print '<li><a href="apply.php">Create Request</a></li>';
                     print '<li><a href="../explore.php">Explore</a></li>';
@@ -73,5 +73,5 @@
                 <a href="https://linkedin.com" class="fa fa-linkedin"></a>
                 <a href="https://google.com" class="fa fa-google"></a>
 	</figure>
-        <span>&COPY Copyrights. All Rights Reserved</span>
+        <span>&COPY; Copyrights. All Rights Reserved</span>
 </footer>

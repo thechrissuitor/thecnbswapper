@@ -2,7 +2,7 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-light">
     <!-- When the page resizes for a dropdown button -->
     <?php
-    if ($path_parts['dirname'] == "/cs148/dev-final-project/require_login") {
+    if ($path_parts['dirname'] == "/cs148/thecnbswapper/require_login") {
     print '<a href="../index.php"><img src="../images/logo.png" alt=""></a>';
     }  else {
     print '<a href="index.php"><img src="images/logo.png" alt=""></a>';
@@ -24,7 +24,7 @@
             // designed to give the current page a class but also allows
             // you to have more classes if you need them
             /*Home*/
-            if ($path_parts['dirname'] == "/cs148/dev-final-project/require_login") {
+            if ($path_parts['dirname'] == "/cs148/thecnbswapper/require_login") {
                 print '<li class="';
                 if ($path_parts['filename'] == "index") {
                     print ' activePage ';

@@ -171,23 +171,23 @@ if (isset($_POST["btnSwap"])) {
     // will be in the order they appear. errorMsg will be displayed on the form
     // see section 3b. The error flag ($emailERROR) will be used in section 3c.
     if ($username == ""){
-        $errorMsg[] = "There is something wrong with your login. [001]";
+        $errorMsg[] = "There is something wrong with your login. ERROR CODE [001]";
         $hiddenERROR = true;
     }    
     if ($dormId == ""){
-        $errorMsg[] = "There is something wrong with your login. [002]";
+        $errorMsg[] = "There is something wrong with your login. ERROR CODE [002]";
         $dormIdERROR = true;
     }  
     if ($studentOneId == ""){
-        $errorMsg[] = "ERROR CODE [003]";
+        $errorMsg[] = "You must post your own dorm before you can swap. ERROR CODE [003]";
         $dormIdERROR = true;
     } 
     if ($studentTwoId == ""){
-        $errorMsg[] = "ERROR CODE [004]";
+        $errorMsg[] = "The swap was unsuccessful. ERROR CODE [004]";
         $dormIdERROR = true;
     } 
     if ($studentTwoDorm == ""){
-        $errorMsg[] = "ERROR CODE [005]";
+        $errorMsg[] = "The swap was unsuccessful. ERROR CODE [005]";
         $dormIdERROR = true;
     } 
     
