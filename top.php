@@ -51,6 +51,15 @@ $path_parts = pathinfo($phpSelf);
             print '</pre></p>';
         } 
         
+        // get username from the server of whoever logged in
+        $adminUsername = htmlentities($_SERVER["REMOTE_USER"], ENT_QUOTES, "UTF-8");
+        if($adminUsername == 'csuitor' || $adminUsername == 'rerickso' || $adminUsername == 'bduval' || $adminUsername == 'ckweston'
+                || $adminUsername == 'nnimako' || $adminUsername == 'bsylvest'){
+            $isAdmin = true;
+        } else {
+            $isAdmin = false;
+        }
+        
         // %^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
         //
         // inlcude all libraries. 

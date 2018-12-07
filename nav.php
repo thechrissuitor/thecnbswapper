@@ -102,6 +102,16 @@
                 print '<a class = "nav-link" href="../redstone.php">Redstone</a>';
                 print '</li>';
                 
+                /*Tables*/
+                if($isAdmin){
+                    print '<li class="';
+                    if ($path_parts['filename'] == "tables") {
+                        print ' activePage ';
+                    }
+                    print ' nav-item">';
+                    print '<a class = "nav-link" href="../tables.php">Tables</a>';
+                    print '</li>';
+                }
                 
             } else {
                 print '<li class="';
@@ -175,6 +185,16 @@
                 print '<a class = "nav-link" href="redstone.php">Redstone</a>';
                 print '</li>';
                 
+                /*Tables*/
+                if($isAdmin){
+                        print '<li class="';
+                        if ($path_parts['filename'] == "tables") {
+                            print ' activePage ';
+                        }
+                        print ' nav-item">';
+                        print '<a class = "nav-link" href="tables.php">Tables</a>';
+                        print '</li>';
+                    }
                 }
             ?>
         </ol>
