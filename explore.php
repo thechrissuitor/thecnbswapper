@@ -18,37 +18,33 @@ if ($thisDatabaseReader->querySecurityOk($query, 0)) {
 <!--src:http://getbootstrap.com/docs/4.1/components/card/-->
 <main>
 	<?php
-	if (is_array($records)) {
-            foreach($records as $record) {
-                    $dormId = $record['pmkUserDormId'];
-                    $fullName = $record['fldFirstName'] . ' ' . $record['fldLastName']; //this is the student's full name (first and last)
-                    //$theImg = str_replace('../', , subject)$record['fldImagePath']; // THIS IS A STRING. The image path (the location) of the image in the server
-                    $theImg = substr($record["fldImagePath"], 3);
-                    print '<figure class="row studentPost">';
-                    print '<img class="col-sm-6" src="' . $theImg . '" alt="">';
-                    print '<article class="card-body">';
-                    print '<h3>Post</h3>';
-                    print '<p class= "card-text"> ';
-                    print '<strong> Hall: </strong>' . $record['fldHall'] . '<br>';
-                    print '<strong> Dorm Style: </strong>' . $record['fldDormStyle'] . '<br>';
-                    print '<strong> Description: </strong>' . $record['fldDescription'] . '<br>';
-                    print '</p>';
-                    print '<p class= "float-right loveLink">Intereted in this dorm? <a  class = "btn btn-primary" role = "button" href="require_login/market-details.php?dormId=';
-                    print $dormId;
-                    print '">Click Here!</a></p>';
-                    print '</article>';
-                    print '</figure>';
-
-
-//			$record['fldClassStanding'] //this is the student's class standing (i.e. Sophomore)
-//			$record['fldHall'] //THIS IS A STRING. The name of the hall (i.e. McAuley)
-//			$record['fldDormStyle'] //this the style of their dorm (i.e. suite or traditional)
-//			$record['fldRoomNumber'] //student's room number (this is a string)
-//			$record['fldRoommates'] //the integer number of roomates
-//			$record['fldDescription'] //the comments that the user typed in the form
-//			$record['fldImagePath'] // THIS IS A STRING. The image path (the location) of the image in the server
+        if(!empty($records)){
+            if (is_array($records)) {
+                foreach($records as $record) {
+                        $dormId = $record['pmkUserDormId'];
+                        $fullName = $record['fldFirstName'] . ' ' . $record['fldLastName']; //this is the student's full name (first and last)
+                        //$theImg = str_replace('../', , subject)$record['fldImagePath']; // THIS IS A STRING. The image path (the location) of the image in the server
+                        $theImg = substr($record["fldImagePath"], 3);
+                        print '<figure class="row studentPost">';
+                        print '<img class="col-sm-6" src="' . $theImg . '" alt="">';
+                        print '<article class="card-body">';
+                        print '<h3>Post</h3>';
+                        print '<p class= "card-text"> ';
+                        print '<strong> Hall: </strong>' . $record['fldHall'] . '<br>';
+                        print '<strong> Dorm Style: </strong>' . $record['fldDormStyle'] . '<br>';
+                        print '<strong> Description: </strong>' . $record['fldDescription'] . '<br>';
+                        print '</p>';
+                        print '<p class= "float-right loveLink">Intereted in this dorm? <a  class = "btn btn-primary" role = "button" href="require_login/market-details.php?dormId=';
+                        print $dormId;
+                        print '">Click Here!</a></p>';
+                        print '</article>';
+                        print '</figure>';
+                }
             }
-	}
+        } else {
+            print '<h1 class="text-center">There are no post available.</h1>';
+            print '<h2 class="text-center">Check out <a href="require_login/apply.php">our form</a> to submit a request.</h2>';
+        }
 	?>
 </main>
 

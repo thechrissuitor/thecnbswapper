@@ -82,6 +82,7 @@ $studentOneId = '';
 $userOneQuery = "SELECT pmkStudentId FROM tblStudentInfo WHERE fldNetIdUsername LIKE ?";
 $queryData[] = $username;
 // SEND SELECT QUERY
+// we use the writer for the select query so that we can send the data
 if ($thisDatabaseWriter->querySecurityOk($userOneQuery, 1, 0, 0, 0, 0)) {
     $userOneQuery = $thisDatabaseReader->sanitizeQuery($userOneQuery);
     $userOneId = $thisDatabaseWriter->select($userOneQuery, $queryData);
@@ -283,7 +284,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
         print $message;
     } else {       
      print '<h2>SWAP</h2>';
-     print '<p class="form-heading">Would you like to place a request to swap with this dorm?</p>';
+     print '<p class="form-heading text-center">Would you like to place a request to swap with this dorm?</p>';
      
         //####################################
         //

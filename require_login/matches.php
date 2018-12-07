@@ -49,95 +49,52 @@ foreach($dormId as $id){
         $displayQuery .= 'pmkUserDormId = ' . $id . ' OR '; // we do this for each id in $dormId to display the correct matches
         $conditionsCount++;
 }
-$displayQuery = substr($displayQuery, 0, -4); // strip the final " AND "
+if($conditionsCount != 0){
+    $displayQuery = substr($displayQuery, 0, -4); // strip the final " AND "
 
-$displayRecords = '';
-// SEND QUERY
-if ($thisDatabaseReader->querySecurityOk($displayQuery, 1, $conditionsCount-1)) { // we subtract 1 because of the striped AND
-    $displayQuery = $thisDatabaseReader->sanitizeQuery($displayQuery);
-    $displayRecords = $thisDatabaseReader->select($displayQuery, '');
+    $displayRecords = '';
+    // SEND QUERY
+    if ($thisDatabaseReader->querySecurityOk($displayQuery, 1, $conditionsCount-1)) { // we subtract 1 because of the striped AND
+        $displayQuery = $thisDatabaseReader->sanitizeQuery($displayQuery);
+        $displayRecords = $thisDatabaseReader->select($displayQuery, '');
+    }
 }
-$test0 = $thisDatabaseWriter->testSecurityQuery($matchingQuery, 2, 1);
-$test = $thisDatabaseWriter->testSecurityQuery($displayQuery, 1, $conditionsCount-1);
 ?>
 
 <main>
 <?php
 // THIS IS WHAT WILL BE DISPLAYED WITH HTML
-if(is_array($displayRecords)){
-    foreach($displayRecords as $displayRecord){
-        $fullName = $displayRecord['fldFirstName'] . ' ' . $displayRecord['fldLastName'];
-        $theImg = $displayRecord["fldImagePath"];
-        print '<figure class="row matchInfo">';
-        print '<img class="col-sm-6" src="' . $theImg . '" alt="">';
-        print '<article class="card-body">';
-        print '<h3>Match</h3>';
-        print '<p class= "card-text"> ';
-        print '<stong>Email:</strong>' . $displayRecord['fldEmail'] . '<br>'; // IMPORTANT!! this is the email of the matched student. This is how contact will be made [string]
-        print '<strong> Hall: </strong>' . $displayRecord['fldHall'] . '<br>';
-        print '<strong>Room Number: </strong>' . $displayRecord['fldRoomNumber'] . '<br>'; 
-        print '<strong> Dorm Style: </strong>' . $displayRecord['fldDormStyle'] . '<br>';
-        print '<strong>Roommates: </strong>' .$displayRecord['fldRoommates'] . '<br>';
-        print '<strong> Description: </strong>' . $displayRecord['fldDescription'] . '<br>';
-        print '</p>';
-        print '<p class= "float-right loveLink">Ready to take the next step? ';
-        print '<a  class = "btn btn-primary" data-toggle = "modal" data-target = "#exampleModal" data-whatever = "';
-        print $displayRecord['fldEmail'];
-        print '" role = "button" href="#';
-        //print $dormId;
-        print '">Accept!</a></p>';
-        print '</article>';
-        print '</figure>';
-                
-        
-		
-        $displayRecord['fldClassStanding']; // this is the class standing of the matched student [string]
-		
-		//$displayRecord['fldHall']; // the hall of the matched dorm [string]
-		//$displayRecord['fldDormStyle']; // the dorm style of the matched dorm [string]
-		//$displayRecord['fldRoomNumber']; // the room number of the mached dorm [string]
-		//$displayRecord['fldRoommates']; // the number of roommates that the matched student has [int]
-		//$displayRecord['fldDescription']; // the comments that the matched student wrote [string]
-		//$displayRecord['fldImagePath']; // the image path of the match dorm [string]
-                
-                
-                
-                
-                
-	}
-        ?>
-<section class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <figure class="modal-dialog" role="document">
-      <figure class="modal-content">
-        <article class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">New message to <?php $displayRecord['fldEmail']?></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </article>
-
-        <section class="modal-body">
-          <form>
-            <p class="form-group">
-              <label for="recipient-name" class="col-form-label">Recipient:</label>
-              <input type="text" class="form-control" id="recipient-name">
-            </p>
-            <p class="form-group">
-              <label for="message-text" class="col-form-label">Message:</label>
-              <textarea class="form-control" id="message-text"></textarea>
-            </p>
-          </form>
-        </section>
-
-        <section class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Send message</button>
-        </section>
-      </figure>
-    </figure>
-  </section>
-    <?php
-    }
+if(!empty($displayRecords)){
+    if(is_array($displayRecords)){
+        foreach($displayRecords as $displayRecord){
+            $fullName = $displayRecord['fldFirstName'] . ' ' . $displayRecord['fldLastName'];
+            $theImg = $displayRecord["fldImagePath"];
+            print '<figure class="row matchInfo">';
+            print '<img class="col-sm-6" src="' . $theImg . '" alt="">';
+            print '<article class="card-body">';
+            print '<h3>Match</h3>';
+            print '<p class= "card-text"> ';
+            print '<stong>Email:</strong>' . $displayRecord['fldEmail'] . '<br>'; // IMPORTANT!! this is the email of the matched student. This is how contact will be made [string]
+            print '<strong> Hall: </strong>' . $displayRecord['fldHall'] . '<br>';
+            print '<strong>Room Number: </strong>' . $displayRecord['fldRoomNumber'] . '<br>'; 
+            print '<strong> Dorm Style: </strong>' . $displayRecord['fldDormStyle'] . '<br>';
+            print '<strong>Roommates: </strong>' .$displayRecord['fldRoommates'] . '<br>';
+            print '<strong> Description: </strong>' . $displayRecord['fldDescription'] . '<br>';
+            print '</p>';
+            print '<p class= "float-right loveLink">Ready to take the next step? ';
+            print '<a  class = "btn btn-primary" data-toggle = "modal" data-target = "#exampleModal" data-whatever = "';
+            print $displayRecord['fldEmail'];
+            print '" role = "button" href="#';
+            //print $dormId;
+            print '">Accept!</a></p>';
+            print '</article>';
+            print '</figure>';
+            }
+        }
+} else {
+    print '<h1 class="text-center">YOU DO NOT HAVE ANY MATCHES.</h1>';
+    print '<h2 class="text-center">Check back later.</h2>';
+}
 ?>
     
     
