@@ -4,7 +4,7 @@
     <?php
     if ($path_parts['dirname'] == "/cs148/dev-final-project/require_login") {
     ?>
-    <a href="index.php"><img src="../images/logo.png" alt=""></a>
+    <a href="../index.php"><img src="../images/logo.png" alt=""></a>
     <?php
     }  else {
     ?>
@@ -55,6 +55,15 @@
                 }
                 print ' nav-item">';
                 print '<a class = "nav-link" href="../explore.php">Explore</a>';
+                print '</li>';
+                
+                /*Matches*/
+                print '<li class="';
+                if ($path_parts['filename'] == "matches") {
+                    print ' activePage ';
+                }
+                print ' nav-item">';
+                print '<a class = "nav-link" href="matches.php">Matches</a>';
                 print '</li>';
 
                 /*Trinity*/
@@ -119,6 +128,15 @@
                 }
                 print ' nav-item">';
                 print '<a class = "nav-link" href="explore.php">Explore</a>';
+                print '</li>';
+                
+                /*Matches*/
+                print '<li class="';
+                if ($path_parts['filename'] == "matches") {
+                    print ' activePage ';
+                }
+                print ' nav-item">';
+                print '<a class = "nav-link" href="require_login/matches.php">Matches</a>';
                 print '</li>';
 
                 /*Trinity*/

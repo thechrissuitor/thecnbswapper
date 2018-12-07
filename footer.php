@@ -17,13 +17,32 @@
         <article class="col-sm-4 text-center">
             <h4 class="">Links</h4>
             <ul class="fNav">
+                <?php
+                if ($path_parts['dirname'] == "/cs148/dev-final-project/require_login") {
+                ?>
+                    <li><a href="../index.php">Home</a></li>
+                    <li><a href="apply.php">Create Request</a></li>
+                    <li><a href="../explore.php">Explore</a></li>
+                    <li><a href="matches.php">Matches</a></li>
+                    <li><a href="../trinity.php">Trinity</a></li>
+                    <li><a href="../central.php">Central</a></li>
+                    <li><a href="../athletic.php">Athletic</a></li>
+                    <li><a href="../redstone.php">Redstone</a></li>
+                <?php
+                }else{
+                ?>
                 <li><a href="index.php">Home</a></li>
                 <li><a href="require_login/apply.php">Create Request</a></li>
                 <li><a href="explore.php">Explore</a></li>
+                <li><a href="require_login/matches.php">Matches</a></li>
                 <li><a href="trinity.php">Trinity</a></li>
                 <li><a href="central.php">Central</a></li>
                 <li><a href="athletic.php">Athletic</a></li>
                 <li><a href="redstone.php">Redstone</a></li>
+                
+                <?php
+                }
+                ?>
             </ul>
         </article>
         
