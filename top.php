@@ -65,7 +65,7 @@ $path_parts = pathinfo($phpSelf);
         // inlcude all libraries. 
         // 
         // %^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
-        if ($path_parts['dirname'] == "/cs148/dev-final-project/require_login") { //if statement to change file paths for if a file is in the require_login folder
+        if ($path_parts['dirname'] == "/cs148/thecnbswapper/require_login") { //if statement to change file paths for if a file is in the require_login folder
             
             // WE HAVE TO USE IF-STATEMENTS FOR ANYTHING USING FILE PATHS BECAUSE
             // WE HAVE FILES IN THE require_login FOLDER
@@ -125,7 +125,7 @@ $path_parts = pathinfo($phpSelf);
     <?php
     print '<body id="' . $PATH_PARTS['filename'] . '">';
     
-    if ($path_parts['dirname'] == "/cs148/dev-final-project/require_login") {
+    if ($path_parts['dirname'] == "/cs148/thecnbswapper/require_login") {
         include '../nav.php';
 //        include '../header.php';
     } else {
