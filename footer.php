@@ -28,7 +28,10 @@
                     <li><a href="../central.php">Central</a></li>
                     <li><a href="../athletic.php">Athletic</a></li>
                     <li><a href="../redstone.php">Redstone</a></li>
-                <?php
+                    <?php if($isAdmin){ ?>
+                    <li><a href="../tables.php">Tables</a></li>
+                    <?php }
+                
                 }else{
                 ?>
                 <li><a href="index.php">Home</a></li>
@@ -39,8 +42,10 @@
                 <li><a href="central.php">Central</a></li>
                 <li><a href="athletic.php">Athletic</a></li>
                 <li><a href="redstone.php">Redstone</a></li>
-                
-                <?php
+                <li><a href="tables.php">Tables</a></li>
+                <?php<?php if($isAdmin){ ?>
+                    <li><a href="tables.php">Tables</a></li>
+                    <?php }
                 }
                 ?>
             </ul>
