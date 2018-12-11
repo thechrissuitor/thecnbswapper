@@ -1,9 +1,9 @@
 <?php
-define('DATABASE_NAME', 'CSUITOR_final_project');
-define('DATABASE_READER', 'csuitor_reader');
+define('DATABASE_NAME', 'NNIMAKO_final_project');
+define('DATABASE_READER', 'nnimako_reader');
 define('DATABASE_READER_PWD', 'r');
 define('DATABASE_WRITER_PWD', 'w');
-define('DATABASE_WRITER', 'csuitor_writer');
+define('DATABASE_WRITER', 'nnimako_writer');
 
 define('ADMIN_EMAIL', get_current_user() . '@uvm.edu');
 
