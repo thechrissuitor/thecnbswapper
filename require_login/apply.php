@@ -629,12 +629,6 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
 //
 ?>       
 <main>
-    <?php 
-    $test = $thisDatabaseWriter->testSecurityQuery($studentSurveyInsertQuery, 0);
-    print '<p><pre>';
-    print_r($studentSurveyData);
-    print '</pre></p>';
-    ?>
     <article>
 <?php
     //####################################
