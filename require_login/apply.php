@@ -86,7 +86,7 @@ if ($thisDatabaseReader->querySecurityOk($surveyQuery, 0 ,1)) {
 }
 
 // query for if it IS an update
-$surveyUpdateQuery = 'SELECT pfkStudentId, pfkInputId FROM tblStudentSurvey';
+$surveyUpdateQuery = 'SELECT pfkStudentId, pfkInput FROM tblStudentSurvey';
 if ($thisDatabaseReader->querySecurityOk($surveyUpdateQuery)) {
     $surveyUpdateQuery = $thisDatabaseReader->sanitizeQuery($surveyUpdateQuery);
     $surveyUpdateRecords = $thisDatabaseReader->select($surveyUpdateQuery, '');
@@ -171,16 +171,16 @@ $survey = $surveyRecords;
 if($dormID != -1){ //if an update
     if (is_array($survey)) {
         for($i = 0; $i < count($survey); $i++){
-            $tags[$i]['fldDefaultValue'] = 0;
-            $tags[$i][1] = 0;
+            $survey[$i]['fldDefaultValue'] = 0;
+            $survey[$i][1] = 0;
         }
     }
     if(is_array($surveyUpdateRecords)){
         for($i = 0; $i < count($survey); $i++){
             foreach($surveyUpdateRecords as $surveyUpdateRecord){
-                if($surveyUpdateRecord['pfkInputId'] === $survey[$i]['pmkInputId']){
-                    $tags[$i]['fldDefaultValue'] = 1;
-                    $tags[$i][1] = 1;
+                if($surveyUpdateRecord['pfkInput'] === $survey[$i]['pmkInput']){
+                    $survey[$i]['fldDefaultValue'] = 1;
+                    $survey[$i][1] = 1;
                 }
             }
         }
@@ -268,7 +268,7 @@ if (isset($_POST["btnSubmit"])) {
     $image .= basename($_FILES["imgImage"]["name"]);
     
     /* Sets everything in the query array to false,
-    * it then checks if the tag is in the POST array.
+    * it then checks if the survey choice is in the POST array.
     * If it is in the POST array, then the value will
     * be set to true.
     */
@@ -513,7 +513,7 @@ if (isset($_POST["btnSubmit"])) {
         // SEND CHECKBOXES TO DATABASE
         if($hiddenDormID != -1){ // if an update
             $studentSurveyInsertQuery = 'INSERT IGNORE INTO tblStudentSurvey (pfkStudentId, pfkInput)';
-            $trailsTagsInsertQuery .= ' VALUES ';
+            $studentSurveyInsertQuery .= ' VALUES ';
             // use a for-loop to get the correct number of question marks
             if (is_array($survey)) {
                 foreach ($survey as $survey) {
@@ -524,15 +524,24 @@ if (isset($_POST["btnSubmit"])) {
             }
             $studentSurveyInsertQuery = rtrim($studentSurveyInsertQuery, ","); // remove the last comma
             
-            // grab the student id
+            // BEGIN grab the student id
             $studentIdQuery = 'SELECT pmkStudentId FROM tblStudentInfo WHERE fnkDormId = ' . $hiddenDormID;
-            
-            // for every tag marked true, add the pmk and tag to the data array,
+            if ($thisDatabaseReader->querySecurityOk($studentIdQuery)) {
+                $studentIdQuery = $thisDatabaseReader->sanitizeQuery($studentIdQuery);
+                $studentIdRecords = $thisDatabaseReader->select($studentIdQuery, '');
+            }
+            $stuId = 0;
+            foreach($studentIdRecords as $studentIdRecord){
+                $studId = $studentIdRecord['pmkStudentId'];
+            }
+            // END "grab the student id"
+            // 
+            // for every survey marked true, add the student id and survey to the data array,
             // that way the data can match the corresponding question marks.
             if (is_array($survey)) {
                 foreach ($survey as $choice) {
                     if($choice['fldDefaultValue'] == 1){
-                        $studentSurveyData[] = $hiddenDormID;
+                        $studentSurveyData[] = $stuId;
                         $studentSurveyData[] = $choice['pmkInput'];
                     }
                 }
@@ -556,7 +565,7 @@ if (isset($_POST["btnSubmit"])) {
             }
             $studentSurveyInsertQuery = rtrim($studentSurveyInsertQuery, ","); // remove the last comma
             
-            // for every tag marked true, add the pmk and tag to the data array,
+            // for every survey marked true, add the student id and survey to the data array,
             // that way the data can match the corresponding question marks.
             if (is_array($survey)) {
                 foreach ($survey as $choice) {
@@ -566,6 +575,13 @@ if (isset($_POST["btnSubmit"])) {
                     }
                 }
             }
+            
+            //SEND INSERT QUERY
+            if ($thisDatabaseWriter->querySecurityOk($studentSurveyInsertQuery, 0)) {
+                $studentSurveyInsertQuery = $thisDatabaseWriter->sanitizeQuery($studentSurveyInsertQuery);
+                $studentSurveyData = $thisDatabaseWriter->insert($studentSurveyInsertQuery, $studentSurveyData);
+            }
+            //$test = $thisDatabaseWriter->testSecurityQuery($studentSurveyInsertQuery, 0);
         }
      
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -613,6 +629,12 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
 //
 ?>       
 <main>
+    <?php 
+    $test = $thisDatabaseWriter->testSecurityQuery($studentSurveyInsertQuery, 0);
+    print '<p><pre>';
+    print_r($studentSurveyData);
+    print '</pre></p>';
+    ?>
     <article>
 <?php
     //####################################
@@ -686,7 +708,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                     //grab the username from the login
                     $username = htmlentities($_SERVER["REMOTE_USER"], ENT_QUOTES, "UTF-8");
                     ?>
-                    <input id="hdnUserName" name="hdnUserName" type="hidden" value=<?php if($dormID != -1){print $username;}else{print $hidden;} ?>>
+                    <input id="hdnUserName" name="hdnUserName" type="hidden" value=<?php if($dormID == -1){print $username;}else{print $hidden;} ?>>
                     <p class="row">
                         <label class="required frmLabel" for="txtFirstName">First Name</label>  
                         <input autofocus
@@ -858,8 +880,8 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                             }
                             
 
-                            // the value is the index number of the tblTags array
-                            print 'value="' . $i . '">' . $choice["pmkInput"];
+                            // the value is the index number of the tblSurvey array
+                            print 'value="' . $i++ . '">' . $choice["pmkInput"];
                             print '</label>' . PHP_EOL;
                         }
                     }
