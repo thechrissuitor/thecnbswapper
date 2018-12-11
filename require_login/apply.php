@@ -452,7 +452,17 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
        */
 ?>    
 
-
+<!-- FORM FOR DEL-->
+<form action="<?php print $phpSelf; ?>"
+      method="post"
+      id="frmDel">
+    <input type="hidden" name="" value="<?php print $dormId; ?>" >
+    
+    
+     <fieldset class="buttons">
+        <input type="submit" id="btnSubmit" name="btnDelete" value="Delete" tabindex="1900" class="button">
+    </fieldset> <!-- ends buttons -->
+</form>
 
 <form action = "<?php print $phpSelf; ?>"
           id = "frmRegister"
