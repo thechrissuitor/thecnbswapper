@@ -38,7 +38,7 @@ if ($thisDatabaseReader->querySecurityOk($query, 0)) {
                         print $dormId;
                         print '">Click Here!</a></p>';
                         print '</article>';
-                        //if($adminUsername){
+                        if($isAdmin){
                             //ADMIN DELETE BUTTON
                             print '<p class= "float-right"><a  class = "btn btn-primary" role = "button" href="require_login/delete.php?dormId=';
                             print $dormId;
@@ -47,7 +47,7 @@ if ($thisDatabaseReader->querySecurityOk($query, 0)) {
                             print '<p class= "float-right"><a  class = "btn btn-primary" role = "button" href="require_login/delete.php?dormId=';
                             print $dormId;
                             print '">UPDATE</a></p>';
-                        //}
+                        }
                         print '</figure>';
                 }
             }

@@ -414,7 +414,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
         print $message;
     } else {       
      print '<h2>Apply to Swap Today!</h2>';
-     print '<p class="form-heading">Your information will be sent to our swapping database where we will try to pair you with a fellow swapper.</p>';
+     print '<p class="form-heading text-center">Your information will be sent to our swapping database where we will try to pair you with a fellow swapper.</p>';
      
         //####################################
         //
@@ -450,19 +450,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
             this prints out a css class so that we can highlight the background etc. to
             make it stand out that a mistake happened here.
        */
-?>    
-
-<!-- FORM FOR DEL-->
-<form action="<?php print $phpSelf; ?>"
-      method="post"
-      id="frmDel">
-    <input type="hidden" name="" value="<?php print $dormId; ?>" >
-    
-    
-     <fieldset class="buttons">
-        <input type="submit" id="btnSubmit" name="btnDelete" value="Delete" tabindex="1900" class="button">
-    </fieldset> <!-- ends buttons -->
-</form>
+        ?>    
 
 <form action = "<?php print $phpSelf; ?>"
           id = "frmRegister"
