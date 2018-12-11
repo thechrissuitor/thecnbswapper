@@ -414,7 +414,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
         print $message;
     } else {       
      print '<h2>Apply to Swap Today!</h2>';
-     print '<p class="form-heading">Your information will be sent to our swapping database where we will try to pair you with a fellow swapper.</p>';
+     print '<p class="form-heading text-center">Your information will be sent to our swapping database where we will try to pair you with a fellow swapper.</p>';
      
         //####################################
         //
