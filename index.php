@@ -42,7 +42,7 @@ include "top.php";
             </a>    
     	</div>
         <p class="mainMenu text-center">
-            <a href="explore.php" class="hExplore"> Explore </a> | <a href="require_login/apply.php" class="hApply">Swap</a>
+            <a href="require_login/explore.php" class="hExplore"> Explore </a> | <a href="require_login/apply.php" class="hApply">Swap</a>
         </p>
     </article>
 

@@ -22,7 +22,7 @@
                 if ($path_parts['dirname'] == "/cs148/thecnbswapper/require_login") {
                     print '<li><a href="../index.php">Home</a></li>';
                     print '<li><a href="apply.php">Create Request</a></li>';
-                    print '<li><a href="../explore.php">Explore</a></li>';
+                    print '<li><a href="explore.php">Explore</a></li>';
                     print '<li><a href="matches.php">Matches</a></li>';
                     print '<li><a href="../trinity.php">Trinity</a></li>';
                     print '<li><a href="../central.php">Central</a></li>';
@@ -36,7 +36,7 @@
                 }else{
                     print '<li><a href="index.php">Home</a></li>';
                     print '<li><a href="require_login/apply.php">Create Request</a></li>';
-                    print '<li><a href="explore.php">Explore</a></li>';
+                    print '<li><a href="require_login/explore.php">Explore</a></li>';
                     print '<li><a href="require_login/matches.php">Matches</a></li>';
                     print '<li><a href="trinity.php">Trinity</a></li>';
                     print '<li><a href="central.php">Central</a></li>';
