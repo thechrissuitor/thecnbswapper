@@ -1,5 +1,5 @@
 <?php
-include "top.php";
+include "../top.php";
 $query = "SELECT pmkUserDormId, fldFirstName, fldLastName, fldClassStanding, ";
 $query .= "fldHall, fldDormStyle, fldRoomNumber, fldRoommates, fldDescription, ";
 $query .= "fldImagePath FROM tblDorms JOIN tblStudentInfo ON fnkStudentId = pmkStudentId ";
@@ -24,7 +24,7 @@ if ($thisDatabaseReader->querySecurityOk($query, 0)) {
                         $dormId = $record['pmkUserDormId'];
                         $fullName = $record['fldFirstName'] . ' ' . $record['fldLastName']; //this is the student's full name (first and last)
                         //$theImg = str_replace('../', , subject)$record['fldImagePath']; // THIS IS A STRING. The image path (the location) of the image in the server
-                        $theImg = substr($record["fldImagePath"], 3);
+                        $theImg = $record["fldImagePath"];
                         print '<figure class="row studentPost">';
                         print '<img class="col-sm-6" src="' . $theImg . '" alt="">';
                         print '<article class="card-body">';
@@ -34,17 +34,17 @@ if ($thisDatabaseReader->querySecurityOk($query, 0)) {
                         print '<strong> Dorm Style: </strong>' . $record['fldDormStyle'] . '<br>';
                         print '<strong> Description: </strong>' . $record['fldDescription'] . '<br>';
                         print '</p>';
-                        print '<p class= "float-right loveLink">Intereted in this dorm? <a  class = "btn btn-primary" role = "button" href="require_login/market-details.php?dormId=';
+                        print '<p class= "float-right loveLink">Intereted in this dorm? <a  class = "btn btn-primary" role = "button" href="market-details.php?dormId=';
                         print $dormId;
                         print '">Click Here!</a></p>';
                         print '</article>';
                         if($isAdmin){
                             //ADMIN DELETE BUTTON
-                            print '<p class= "float-right"><a  class = "btn btn-primary" role = "button" href="require_login/delete.php?dormId=';
+                            print '<p class= "float-right"><a  class = "btn btn-primary" role = "button" href="delete.php?dormId=';
                             print $dormId;
                             print '">DELETE</a></p>';
                             //ADMIN UPDATE BUTTON
-                            print '<p class= "float-right"><a  class = "btn btn-primary" role = "button" href="require_login/delete.php?dormId=';
+                            print '<p class= "float-right"><a  class = "btn btn-primary" role = "button" href="apply.php?dormId=';
                             print $dormId;
                             print '">UPDATE</a></p>';
                         }
@@ -53,14 +53,14 @@ if ($thisDatabaseReader->querySecurityOk($query, 0)) {
             }
         } else {
             print '<h1 class="text-center">There are no post available.</h1>';
-            print '<h2 class="text-center">Check out <a href="require_login/apply.php">our form</a> to submit a request.</h2>';
+            print '<h2 class="text-center">Check out <a href="apply.php">our form</a> to submit a request.</h2>';
         }
 	?>
 </main>
 
 
 
-<?php include "footer.php"; ?>
+<?php include "../footer.php"; ?>
 
 </body>
 </html>

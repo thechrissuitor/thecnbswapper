@@ -8,7 +8,91 @@ include '../top.php';
 print  PHP_EOL . '<!-- SECTION: 1 Initialize variables -->' . PHP_EOL;       
 // These variables are used in both sections 2 and 3, otherwise we would
 // declare them in the section we needed them
-//if ($request)
+//
+// check if this is an update:
+$dormID = -1;
+if(isset($_GET['dormId'])){
+    $dormID = (int) htmlentities($_GET['dormId'], ENT_QUOTES, "UTF-8");
+    
+    // if it is an update, grab values
+    
+    // grab dorm information
+    $updateQ1 = 'SELECT fldRoomNumber, fldRoommates, fldDormStyle, ';
+    $updateQ1 .= 'fldDescription, fnkImageId, fnkHallId FROM tblDorms';
+    $updateQ1 .= ' WHERE pmkUserDormId = ' . $dormID;
+    
+    if ($thisDatabaseReader->querySecurityOk($updateQ1)) {
+        $updateQ1 = $thisDatabaseReader->sanitizeQuery($updateQ1);
+        $q1Records = $thisDatabaseReader->select($updateQ1, '');
+    }
+    
+    // grab student informtaion
+    $updateQ2 = 'SELECT fldNetIdUserName, fldFirstName, fldLastName, fldEmail, ';
+    $updateQ2 .= 'fldClassStanding FROM tblStudentInfo WHERE fnkDormId = ' . $dormID;
+    
+    if ($thisDatabaseReader->querySecurityOk($updateQ2)) {
+        $updateQ2 = $thisDatabaseReader->sanitizeQuery($updateQ2);
+        $q2Records = $thisDatabaseReader->select($updateQ2, '');
+    }
+    
+    // grab hall information
+    $updateQ3 = 'SELECT fldHall, pmkHallId ';
+    $updateQ3 .= ' FROM tblHalls';
+    $updateQ3 .= ' WHERE pmkHallId = ' . $updateHallId;
+    
+    if ($thisDatabaseReader->querySecurityOk($updateQ3)) {
+        $updateQ3 = $thisDatabaseReader->sanitizeQuery($updateQ3);
+        $q3Records = $thisDatabaseReader->select($updateQ3, '');
+    }
+    
+    // save values to variables
+    if (is_array($q1Records)) {
+        foreach($q1Records as $record1) {
+            $updateRoomNumber = $record1['fldRoomNumber'];
+            $updateRoomates = $record1['fldRoommates'];
+            $updateDormStyle = $record1['fldDormStyle'];
+            $updateDescription = $record1['fldDescription'];
+            $updateImage = $record1['fnkImageId'];
+            $updateHallId = $record1['fnkHallId'];
+        }
+    }
+    if (is_array($q2Records)) {
+        foreach($q2Records as $record2) {
+            $updateNetIdUserName = $record2['fldNetIdUserName'];
+            $updateFirstName = $record2['fldFirstName'];
+            $updateLastName = $record2['fldLastName'];
+            $updateEmail = $record2['fldEmail'];
+            $updateClassStanding = $record2['fldClassStanding'];
+        }
+    }
+    if (is_array($q3Records)) {
+        foreach($q3Records as $record3) {
+            $updateHall = $record3['pmkHallId'];
+        }
+    }
+    
+}
+
+
+// EXECUTE QUERIES TO GET DATA FOR CHECKBOXES
+$surveyRecords = '';
+$surveyUpdateRecords = '';
+    
+// query for if it is not an update
+$surveyQuery = 'SELECT pmkInput, fldDefaultValue FROM tblSurvey ORDER BY fldDisplayOrder';
+if ($thisDatabaseReader->querySecurityOk($surveyQuery, 0 ,1)) {
+    $surveyQuery = $thisDatabaseReader->sanitizeQuery($surveyQuery);
+    $surveyRecords = $thisDatabaseReader->select($surveyQuery, '');
+}
+
+// query for if it IS an update
+$surveyUpdateQuery = 'SELECT pfkStudentId, pfkInputId FROM tblStudentSurvey';
+if ($thisDatabaseReader->querySecurityOk($surveyUpdateQuery)) {
+    $surveyUpdateQuery = $thisDatabaseReader->sanitizeQuery($surveyUpdateQuery);
+    $surveyUpdateRecords = $thisDatabaseReader->select($surveyUpdateQuery, '');
+}
+// END BLOCK "EXECUTE QUERIES TO GET DATA FOR CHECKBOXES"
+
 print  PHP_EOL . '<!-- SECTION: 1a. debugging setup -->' . PHP_EOL;
 // We print out the post array so that we can see our form is working.
 // Normally i wrap this in a debug statement but for now i want to always
@@ -24,7 +108,6 @@ print  PHP_EOL . '<!-- SECTION: 1a. debugging setup -->' . PHP_EOL;
     print_r($_FILES);
     print '</pre>';
  }
-
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 print PHP_EOL . '<!-- SECTION: 1b form variables -->' . PHP_EOL;
@@ -32,26 +115,78 @@ print PHP_EOL . '<!-- SECTION: 1b form variables -->' . PHP_EOL;
 // Initialize variables one for each form element
 // in the order they appear on the form
 
-$hidden = "";
-$firstName = "";
-$lastName = "";
-$classStanding = "";
-$email = "";
-// For the listbox of dorm halls
-$hall = "";
-$hallRecords = '';
-$hallQuery = 'SELECT fldHall, pmkHallId ';
-$hallQuery .= ' FROM tblHalls ORDER BY fldHall';
-if ($thisDatabaseReader->querySecurityOk($hallQuery, 0, 1)) {
-    $hallQuery = $thisDatabaseReader->sanitizeQuery($hallQuery);
-    $hallRecords = $thisDatabaseReader->select($hallQuery, '');
+if($dormID != -1){
+    $hidden = $updateNetIdUserName;
+    $firstName = $updateFirstName;
+    $lastName = $updateLastName;
+    $classStanding = $updateClassStanding;
+    $email = $updateEmail;
+    // For the listbox of dorm halls
+    $hall = "";
+    $hallRecords = '';
+    $hallQuery = 'SELECT fldHall, pmkHallId ';
+    $hallQuery .= ' FROM tblHalls ';
+    $hallQuery .=  'ORDER BY fldHall';
+    if ($thisDatabaseReader->querySecurityOk($hallQuery, 0, 1)) {
+        $hallQuery = $thisDatabaseReader->sanitizeQuery($hallQuery);
+        $hallRecords = $thisDatabaseReader->select($hallQuery, '');
+    }
+    // END dorm halls listbox
+    $roomNumber = $updateRoomNumber;
+    $roommates = $updateRoomates;
+    $dormStyle = $updateDormStyle;
+    $description = $updateDescription;
+    $image = "../images/user-dorm-images/";
+} else {
+    $hidden = "";
+    $firstName = "";
+    $lastName = "";
+    $classStanding = "";
+    $email = "";
+    // For the listbox of dorm halls
+    $hall = "";
+    $hallRecords = '';
+    $hallQuery = 'SELECT fldHall, pmkHallId ';
+    $hallQuery .= ' FROM tblHalls ';
+    $hallQuery .=  'ORDER BY fldHall';
+    if ($thisDatabaseReader->querySecurityOk($hallQuery, 0, 1)) {
+        $hallQuery = $thisDatabaseReader->sanitizeQuery($hallQuery);
+        $hallRecords = $thisDatabaseReader->select($hallQuery, '');
+    }
+    // END dorm halls listbox
+    $roomNumber = "";
+    $roommates = "";
+    $dormStyle = "";
+    $description = "";
+    $image = "../images/user-dorm-images/";
+    $hiddenDormID = -2;
 }
-// END dorm halls listbox
-$roomNumber = "";
-$roommates = "";
-$dormStyle = "";
-$description = "";
-$image = "../images/user-dorm-images/";
+
+// start checkboxes block
+// 
+// If there is an update, set everything in the survey array ($surveyRecords) to false.
+// Then loop through the tblStudentSurvey array to compare.
+// If the comparison is true, set that value to true
+$survey = $surveyRecords;
+if($dormID != -1){ //if an update
+    if (is_array($survey)) {
+        for($i = 0; $i < count($survey); $i++){
+            $tags[$i]['fldDefaultValue'] = 0;
+            $tags[$i][1] = 0;
+        }
+    }
+    if(is_array($surveyUpdateRecords)){
+        for($i = 0; $i < count($survey); $i++){
+            foreach($surveyUpdateRecords as $surveyUpdateRecord){
+                if($surveyUpdateRecord['pfkInputId'] === $survey[$i]['pmkInputId']){
+                    $tags[$i]['fldDefaultValue'] = 1;
+                    $tags[$i][1] = 1;
+                }
+            }
+        }
+    }
+}
+// end checkboxes block
 
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
@@ -70,6 +205,8 @@ $roommateERROR = false;
 $dormStyleERROR = false;
 $descriptionERROR = false;
 $imageERROR = false;
+$hiddenDormIDERROR = false;
+$surveyERROR = false;
 ////%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 print PHP_EOL . '<!-- SECTION: 1d misc variables -->' . PHP_EOL;
@@ -124,10 +261,33 @@ if (isset($_POST["btnSubmit"])) {
     $dormStyle = htmlentities($_POST["lstDormStyle"], ENT_QUOTES, "UTF-8");
     
     $description = htmlentities($_POST["txtDescription"], ENT_QUOTES, "UTF-8");
+    
+    $hiddenDormID = htmlentities($_POST["hdnDormID"], ENT_QUOTES, "UTF-8");
         
     // code received from https://www.w3schools.com/php/php_file_upload.asp
     $image .= basename($_FILES["imgImage"]["name"]);
     
+    /* Sets everything in the query array to false,
+    * it then checks if the tag is in the POST array.
+    * If it is in the POST array, then the value will
+    * be set to true.
+    */
+    $survey = $surveyRecords;
+    if (is_array($survey)) {
+        for($i = 0; $i < count($survey); $i++){
+            $survey[$i]['fldDefaultValue'] = 0;
+            $survey[$i][1] = 0;
+        }
+        foreach ($_POST as $htmlName => $value) {
+            if(substr($htmlName, 0, 3) === "chk"){
+                $value = (int) htmlentities($value, ENT_QUOTES, "UTF-8");
+                if(in_array($survey[$value]['pmkInput'], $survey[$value])){
+                    $survey[$value]['fldDefaultValue'] = 1;
+                    $survey[$value][1] = 1;
+                }
+            }
+        }
+    }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
     print PHP_EOL . '<!-- SECTION: 2c Validation -->' . PHP_EOL;
@@ -254,6 +414,11 @@ if (isset($_POST["btnSubmit"])) {
         }
     }
     
+    if($hiddenDormID == -2){
+        $errorMsg[] = "There was something wrong with your update. Please contact help.";
+        $hiddenDormIDERROR = true;
+    }
+    
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
     print PHP_EOL . '<!-- SECTION: 2d Process Form - Passed Validation -->' . PHP_EOL;
@@ -345,6 +510,63 @@ if (isset($_POST["btnSubmit"])) {
             $dormUpdateDataRecord = $thisDatabaseWriter->insert($dormUpdateQuery, $dormUpdateDataRecord);
         }
     
+        // SEND CHECKBOXES TO DATABASE
+        if($hiddenDormID != -1){ // if an update
+            $studentSurveyInsertQuery = 'INSERT IGNORE INTO tblStudentSurvey (pfkStudentId, pfkInput)';
+            $trailsTagsInsertQuery .= ' VALUES ';
+            // use a for-loop to get the correct number of question marks
+            if (is_array($survey)) {
+                foreach ($survey as $survey) {
+                    if($survey['fldDefaultValue'] == 1){
+                        $studentSurveyInsertQuery .= '(?,?),';
+                    }
+                }
+            }
+            $studentSurveyInsertQuery = rtrim($studentSurveyInsertQuery, ","); // remove the last comma
+            
+            // grab the student id
+            $studentIdQuery = 'SELECT pmkStudentId FROM tblStudentInfo WHERE fnkDormId = ' . $hiddenDormID;
+            
+            // for every tag marked true, add the pmk and tag to the data array,
+            // that way the data can match the corresponding question marks.
+            if (is_array($survey)) {
+                foreach ($survey as $choice) {
+                    if($choice['fldDefaultValue'] == 1){
+                        $studentSurveyData[] = $hiddenDormID;
+                        $studentSurveyData[] = $choice['pmkInput'];
+                    }
+                }
+            }
+            //SEND INSERT QUERY
+            if ($thisDatabaseWriter->querySecurityOk($studentSurveyInsertQuery, 0)) {
+                $studentSurveyInsertQuery = $thisDatabaseWriter->sanitizeQuery($studentSurveyInsertQuery);
+                $studentSurveyData = $thisDatabaseWriter->insert($studentSurveyInsertQuery, $studentSurveyData);
+            }
+        } else { // if an insert
+            
+            $studentSurveyInsertQuery = 'INSERT IGNORE INTO tblStudentSurvey (pfkStudentId, pfkInput)';
+            $studentSurveyInsertQuery .= ' VALUES ';
+            // use a for-loop to get the correct number of question marks
+            if (is_array($survey)) {
+                foreach ($survey as $choice) {
+                    if($choice['fldDefaultValue'] == 1){
+                        $studentSurveyInsertQuery .= '(?,?),';
+                    }
+                }
+            }
+            $studentSurveyInsertQuery = rtrim($studentSurveyInsertQuery, ","); // remove the last comma
+            
+            // for every tag marked true, add the pmk and tag to the data array,
+            // that way the data can match the corresponding question marks.
+            if (is_array($survey)) {
+                foreach ($survey as $choice) {
+                    if($choice['fldDefaultValue'] == 1){
+                        $studentSurveyData[] = $studentId;
+                        $studentSurveyData[] = $choice['pmkInput'];
+                    }
+                }
+            }
+        }
      
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //
@@ -355,12 +577,12 @@ if (isset($_POST["btnSubmit"])) {
 
         $message = '<h2>Your form results:</h2>';       
 
-        $message .= '<p>';
+        $message .= '<p class="text-center">';
         $message .= 'Thank you for using The CNB Swapper. Your dorm has been posted.';
         $message .= ' Please browse the market for rooms that interest you.';
         $message .= ' You will be notified when a match is found.';
         $message .= '</p>';
-        $message .= '<p><a class = "submission-reset-link" href="../explore.php">Keep Exploring</a></p>';
+        $message .= '<p class="text-center"><a class = "submission-reset-link" href="../explore.php">Keep Exploring</a></p>';
         
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //
@@ -390,7 +612,7 @@ if (isset($_POST["btnSubmit"])) {
 print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
 //
 ?>       
-<main>     
+<main>
     <article>
 <?php
     //####################################
@@ -403,13 +625,13 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
     if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { // closing of if marked with: end body submit
         print '<h2>Thank you for providing your information.</h2>';
     
-        print '<p>For your records a copy of this data has ';
+        print '<p class="text-center">For your records a copy of this data has ';
         if (!$mailed) {    
             print "not ";         
         }
     
         print 'been sent:</p>';
-        print '<p>To: ' . $email . '</p>';
+        print '<p class="text-center">To: ' . $email . '</p>';
     
         print $message;
     } else {       
@@ -450,8 +672,8 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
             this prints out a css class so that we can highlight the background etc. to
             make it stand out that a mistake happened here.
        */
-        ?>    
-
+        ?>
+        
 <form action = "<?php print $phpSelf; ?>"
           id = "frmRegister"
           method = "post"
@@ -464,7 +686,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                     //grab the username from the login
                     $username = htmlentities($_SERVER["REMOTE_USER"], ENT_QUOTES, "UTF-8");
                     ?>
-                    <input id="hdnUserName" name="hdnUserName" type="hidden" value=<?php print $username; ?>>
+                    <input id="hdnUserName" name="hdnUserName" type="hidden" value=<?php if($dormID != -1){print $username;}else{print $hidden;} ?>>
                     <p class="row">
                         <label class="required frmLabel" for="txtFirstName">First Name</label>  
                         <input autofocus
@@ -518,8 +740,14 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                                 foreach ($hallRecords as $record) { 
                                     print "<option value = ";
                                     print $record['pmkHallId'];
-                                    if($hall == $record['pmkHallId']){
-                                        print " selected ";
+                                    if($dormID != -1){
+                                        if($hall == $updateHall){
+                                            print " selected ";
+                                        }
+                                    } else {
+                                        if($hall == $record['pmkHallId']){
+                                            print " selected ";
+                                        }
                                     }
                                     print " > ";
                                     print $record['fldHall'];
@@ -608,6 +836,35 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                     <p class="row imgUpload">Upload a picture of your dorm:
                         <input type="file" name="imgImage" id="imgImage" tabindex="320">
                     </p>
+                    <input id="hdnDormID" name="hdnDormID" type="hidden" value=<?php $dormID ?>>
+                    <?php     
+                    $i = 0;
+                    print '<p><br>Please complete this optional survey.<br>The results will be kept private.</p>';
+                    print '<p>Select the reason you want to switch out of your dorm: </p>';
+                    print '<p>';
+                    if (is_array($survey)) {
+                        foreach ($survey as $choice) {
+                            print "\t" . '<label for="chk' . str_replace(" ", "", $choice["pmkInput"]) . '"><input type="checkbox" ';
+                            print ' id="chk' . str_replace(" ", "", $choice["pmkInput"]) . '" ';
+                            print ' name="chk' . str_replace(" ", "", $choice["pmkInput"]) . '" ';
+                            
+                            print ' class= checkbox ';
+                            if ($surveyERROR) {
+                                print ' mistake ';
+                            }
+
+                            if($choice['fldDefaultValue']){
+                                print ' checked ';
+                            }
+                            
+
+                            // the value is the index number of the tblTags array
+                            print 'value="' . $i . '">' . $choice["pmkInput"];
+                            print '</label>' . PHP_EOL;
+                        }
+                    }
+                    print '</p>';
+                    ?>
                 </fieldset> <!-- ends contact -->
 
             <fieldset class="buttons">
