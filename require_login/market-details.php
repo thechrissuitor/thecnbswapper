@@ -20,8 +20,8 @@ if ($thisDatabaseReader->querySecurityOk($query)) {
 
 <!--src:http://getbootstrap.com/docs/4.1/components/card/-->
 <main>
-	<?php
-	if (is_array($records)) {
+        <?php
+        if (is_array($records)) {
             foreach($records as $record) {
                     $fullName = $record['fldFirstName'] . ' ' . $record['fldLastName']; //this is the student's full name (first and last)
                     //$theImg = str_replace('../', , subject)$record['fldImagePath']; // THIS IS A STRING. The image path (the location) of the image in the server
