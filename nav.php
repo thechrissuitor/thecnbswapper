@@ -49,7 +49,7 @@
                     print ' activePage ';
                 }
                 print ' nav-item">';
-                print '<a class = "nav-link" href="../explore.php">Explore</a>';
+                print '<a class = "nav-link" href="explore.php">Explore</a>';
                 print '</li>';
                 
                 /*Matches*/
