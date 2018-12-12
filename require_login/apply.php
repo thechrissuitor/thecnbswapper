@@ -702,7 +702,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                     //grab the username from the login
                     $username = htmlentities($_SERVER["REMOTE_USER"], ENT_QUOTES, "UTF-8");
                     ?>
-                    <input id="hdnUserName" name="hdnUserName" type="hidden" value=<?php if($dormID == -1){print $username;}else{print $hidden;} ?>>
+                    <input id="hdnUserName" name="hdnUserName" type="hidden" value="<?php if($dormID == -1){print $username;}else{print $hidden;} ?>">
                     <p class="row">
                         <label class="required frmLabel" for="txtFirstName">First Name</label>  
                         <input autofocus
@@ -852,7 +852,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                     <p class="row imgUpload">Upload a picture of your dorm:
                         <input type="file" name="imgImage" id="imgImage" tabindex="320">
                     </p>
-                    <input id="hdnDormID" name="hdnDormID" type="hidden" value=<?php $dormID ?>>
+                    <input id="hdnDormID" name="hdnDormID" type="hidden" value="<?php $dormID ?>">
                     <?php     
                     $i = 0;
                     print '<p><br>Please complete this optional survey.<br>The results will be kept private.</p>';
