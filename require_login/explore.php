@@ -64,12 +64,3 @@ if ($thisDatabaseReader->querySecurityOk($query, 0)) {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
- ';

@@ -137,6 +137,7 @@ if($dormID != -1){
     $dormStyle = $updateDormStyle;
     $description = $updateDescription;
     $image = "../images/user-dorm-images/";
+    $hiddenDormID = $dormID;
 } else {
     $hidden = "";
     $firstName = "";
@@ -454,102 +455,137 @@ if (isset($_POST["btnSubmit"])) {
         $dormDataRecord[] = $description;
         $imageDataRecord[] = $image;
         
-        //INSERT QUERY FOR TBLUSERIMAGES
-        $imageInsertQuery = "INSERT INTO tblUserImages SET fldImagePath = ?";
-        
-        //SEND INSERT QUERY FOR TBLUSERIMAGES
-        if ($thisDatabaseWriter->querySecurityOk($imageInsertQuery, 0)) {
-            $imageInsertQuery = $thisDatabaseWriter->sanitizeQuery($imageInsertQuery);
-            $imageDataRecord = $thisDatabaseWriter->insert($imageInsertQuery, $imageDataRecord);
-        }
-        
-        //grab the image ID from the recent insert
-        $imageId = $thisDatabaseWriter->lastInsert();
-        $dormDataRecord[] = $imageId;
-        
-        //INSERT QUERY FOR TBLDORMS
-        $dormInsertQuery = "INSERT INTO tblDorms SET fnkHallId = ?, ";
-        $dormInsertQuery .= "fldRoomNumber = ?, fldRoommates = ?, ";
-        $dormInsertQuery .= "fldDormStyle = ?, fldDescription = ?, fnkImageId = ?, ";
-        $dormInsertQuery .= "fnkStudentId = 0"; //placeholder value
-        
-        //SEND INSERT QUERY FOR TBLDORMS
-        if ($thisDatabaseWriter->querySecurityOk($dormInsertQuery, 0)) {
-            $dormInsertQuery = $thisDatabaseWriter->sanitizeQuery($dormInsertQuery);
-            $dormDataRecord = $thisDatabaseWriter->insert($dormInsertQuery, $dormDataRecord);
-        }
-        
-        ////INSERT QUERY FOR TBLSTUDENTINFO
-        //
-        //grab the dorm ID from the recent insert
-        $dormId = $thisDatabaseWriter->lastInsert();
-        $studentDataRecord[] = $dormId;
-        
-        $studentInsertQuery = "INSERT INTO tblStudentInfo SET fldFirstName = ?, ";
-        $studentInsertQuery .= "fldLastName = ?, fldEmail = ?, ";
-        $studentInsertQuery .= "fldClassStanding = ?, fldNetIdUserName = ?, ";
-        $studentInsertQuery .= "fnkDormId = ?";
-                
-        //SEND INSERT QUERY FOR TBLSTUDNETINFO
-        if ($thisDatabaseWriter->querySecurityOk($studentInsertQuery, 0)) {
-            $studentInsertQuery = $thisDatabaseWriter->sanitizeQuery($studentInsertQuery);
-            $studentDataRecord = $thisDatabaseWriter->insert($studentInsertQuery, $studentDataRecord);
-        }
-        
-        //UPDATE TBLDORMS WITH CORRECT FNKSTUDENTID
-        //
-        //grab the student ID from the recent insert
-        $studentId = $thisDatabaseWriter->lastInsert();
-        $dormUpdateDataRecord[] = $studentId;
-        $dormUpdateDataRecord[] = $dormId;
-        $dormUpdateQuery = "UPDATE tblDorms SET ";
-        $dormUpdateQuery .= "fnkStudentId = ? WHERE pmkUserDormId = ?";
-        //SEND UPDATE QUERY FOR TBLSTUDNETINFO
-        if ($thisDatabaseWriter->querySecurityOk($dormUpdateQuery)) {
-            $dormUpdateQuery = $thisDatabaseWriter->sanitizeQuery($dormUpdateQuery);
-            $dormUpdateDataRecord = $thisDatabaseWriter->insert($dormUpdateQuery, $dormUpdateDataRecord);
-        }
-    
-        // SEND CHECKBOXES TO DATABASE
+        $stuId = 0;
         if($hiddenDormID != -1){ // if an update
-            $studentSurveyInsertQuery = 'INSERT IGNORE INTO tblStudentSurvey (pfkStudentId, pfkInput)';
-            $studentSurveyInsertQuery .= ' VALUES ';
-            // use a for-loop to get the correct number of question marks
-            if (is_array($survey)) {
-                foreach ($survey as $survey) {
-                    if($survey['fldDefaultValue'] == 1){
-                        $studentSurveyInsertQuery .= '(?,?),';
-                    }
-                }
-            }
-            $studentSurveyInsertQuery = rtrim($studentSurveyInsertQuery, ","); // remove the last comma
-            
-            // BEGIN grab the student id
+            // BEGIN grab the student id (for updates)
             $studentIdQuery = 'SELECT pmkStudentId FROM tblStudentInfo WHERE fnkDormId = ' . $hiddenDormID;
             if ($thisDatabaseReader->querySecurityOk($studentIdQuery)) {
                 $studentIdQuery = $thisDatabaseReader->sanitizeQuery($studentIdQuery);
                 $studentIdRecords = $thisDatabaseReader->select($studentIdQuery, '');
             }
-            $stuId = 0;
             foreach($studentIdRecords as $studentIdRecord){
-                $studId = $studentIdRecord['pmkStudentId'];
+                $stuId = $studentIdRecord['pmkStudentId'];
             }
             // END "grab the student id"
-            // 
+        }
+        
+        // IF AN INSERT
+        if($hiddenDormID == -1){ 
+            //INSERT QUERY FOR TBLUSERIMAGES
+            $imageInsertQuery = "INSERT INTO tblUserImages SET fldImagePath = ?";
+            
+            //SEND INSERT QUERY FOR TBLUSERIMAGES
+            if ($thisDatabaseWriter->querySecurityOk($imageInsertQuery, 0)) {
+                $imageInsertQuery = $thisDatabaseWriter->sanitizeQuery($imageInsertQuery);
+                $imageDataRecord = $thisDatabaseWriter->insert($imageInsertQuery, $imageDataRecord);
+            }
+            
+            //grab the image ID from the recent insert
+            $imageId = $thisDatabaseWriter->lastInsert();
+            $dormDataRecord[] = $imageId;
+
+            //INSERT QUERY FOR TBLDORMS
+            $dormInsertQuery = "INSERT INTO tblDorms SET fnkHallId = ?, ";
+            $dormInsertQuery .= "fldRoomNumber = ?, fldRoommates = ?, ";
+            $dormInsertQuery .= "fldDormStyle = ?, fldDescription = ?, fnkImageId = ?, ";
+            $dormInsertQuery .= "fnkStudentId = 0"; //placeholder value
+
+            //SEND INSERT QUERY FOR TBLDORMS
+            if ($thisDatabaseWriter->querySecurityOk($dormInsertQuery, 0)) {
+                $dormInsertQuery = $thisDatabaseWriter->sanitizeQuery($dormInsertQuery);
+                $dormDataRecord = $thisDatabaseWriter->insert($dormInsertQuery, $dormDataRecord);
+            }
+            
+            //INSERT QUERY FOR TBLSTUDENTINFO
+            //
+            //grab the dorm ID from the recent insert
+            $dormId = $thisDatabaseWriter->lastInsert();
+            $studentDataRecord[] = $dormId;
+
+            $studentInsertQuery = "INSERT INTO tblStudentInfo SET fldFirstName = ?, ";
+            $studentInsertQuery .= "fldLastName = ?, fldEmail = ?, ";
+            $studentInsertQuery .= "fldClassStanding = ?, fldNetIdUserName = ?, ";
+            $studentInsertQuery .= "fnkDormId = ?";
+
+            //SEND INSERT QUERY FOR TBLSTUDNETINFO
+            if ($thisDatabaseWriter->querySecurityOk($studentInsertQuery, 0)) {
+                $studentInsertQuery = $thisDatabaseWriter->sanitizeQuery($studentInsertQuery);
+                $studentDataRecord = $thisDatabaseWriter->insert($studentInsertQuery, $studentDataRecord);
+            }
+            
+            //UPDATE TBLDORMS WITH CORRECT FNKSTUDENTID
+            //
+            //grab the student ID from the recent insert
+            $studentId = $thisDatabaseWriter->lastInsert();
+            $dormUpdateDataRecord[] = $studentId;
+            $dormUpdateDataRecord[] = $dormId;
+            $dormUpdateQuery = "UPDATE tblDorms SET ";
+            $dormUpdateQuery .= "fnkStudentId = ? WHERE pmkUserDormId = ?";
+            //SEND UPDATE QUERY FOR TBLSTUDNETINFO
+            if ($thisDatabaseWriter->querySecurityOk($dormUpdateQuery)) {
+                $dormUpdateQuery = $thisDatabaseWriter->sanitizeQuery($dormUpdateQuery);
+                $dormUpdateDataRecord = $thisDatabaseWriter->insert($dormUpdateQuery, $dormUpdateDataRecord);
+            }
+            
+        } else { 
+            
+            // IF AN UPDATE
+            
+            // grab image id
+            $getImageIdForUpdateQuery = "SELECT fnkImageId FROM tblDorms WHERE fnkStudentId = " . $stuId;
+            foreach($ImageIdRecords as $imageIdRecord){
+                $imageIdForUpdate = $imageIdRecord['fnkImageId'];
+            }
+            
+            $imageUpdateQuery = "UPDATE tblUserImages SET fldImagePath = ? WHERE pmkImageID = " . $imageIdForUpdate;
+            
+            //SEND UPDATE QUERY FOR TBLUSERIMAGES
+            if ($thisDatabaseWriter->querySecurityOk($imageUpdateQuery)) {
+                $imageUpdateQuery = $thisDatabaseWriter->sanitizeQuery($imageUpdateQuery);
+                $imageUpdateDataRecord = $thisDatabaseWriter->update($imageUpdateQuery, $imageDataRecord);
+            }
+            
+            //UPDATE QUERY FOR TBLDORMS
+            $dormUpdateQuery = "UPDATE tblDorms SET fnkHallId = ?, ";
+            $dormUpdateQuery .= "fldRoomNumber = ?, fldRoommates = ?, ";
+            $dormUpdateQuery .= "fldDormStyle = ?, fldDescription = ?, fnkImageId = ? ";
+            $dormUpdateQuery .= "WHERE pmkUserDormId = " . $hiddenDormID;
+
+            //SEND UPDATE QUERY FOR TBLDORMS
+            if ($thisDatabaseWriter->querySecurityOk($dormUpdateQuery)) {
+                $dormUpdateQuery = $thisDatabaseWriter->sanitizeQuery($dormUpdateQuery);
+                $dormDataRecord = $thisDatabaseWriter->update($dormUpdateQuery, $dormDataRecord);
+            }
+        }
+        
+        
+        // SEND CHECKBOXES TO DATABASE
+        if($hiddenDormID != -1){ // if an update
+            //$studentSurveyUpdateQuery = 'UPDATE tblStudentSurvey SET pfkInput = ? WHERE pfkStudentId = ?;';
+
+            // use a for-loop to get the correct number of question marks
+            if (is_array($survey)) {
+                foreach ($survey as $survey) {
+                    if($survey['fldDefaultValue'] == 1){
+                        $studentSurveyUpdateQuery .= ' UPDATE tblStudentSurvey SET pfkInput = ? WHERE pfkStudentId = ?;';
+                    }
+                }
+            }
+            
             // for every survey marked true, add the student id and survey to the data array,
             // that way the data can match the corresponding question marks.
             if (is_array($survey)) {
                 foreach ($survey as $choice) {
                     if($choice['fldDefaultValue'] == 1){
-                        $studentSurveyData[] = $stuId;
                         $studentSurveyData[] = $choice['pmkInput'];
+                        $studentSurveyData[] = $stuId;
                     }
                 }
             }
-            //SEND INSERT QUERY
-            if ($thisDatabaseWriter->querySecurityOk($studentSurveyInsertQuery, 0)) {
-                $studentSurveyInsertQuery = $thisDatabaseWriter->sanitizeQuery($studentSurveyInsertQuery);
-                $studentSurveyData = $thisDatabaseWriter->insert($studentSurveyInsertQuery, $studentSurveyData);
+            //SEND UPDATE QUERY
+            if ($thisDatabaseWriter->querySecurityOk($studentSurveyUpdateQuery)) {
+                $studentSurveyUpdateQuery = $thisDatabaseWriter->sanitizeQuery($studentSurveyUpdateQuery);
+                $studentSurveyData = $thisDatabaseWriter->update($studentSurveyUpdateQuery, $studentSurveyData);
             }
         } else { // if an insert
             
@@ -598,7 +634,7 @@ if (isset($_POST["btnSubmit"])) {
         $message .= ' Please browse the market for rooms that interest you.';
         $message .= ' You will be notified when a match is found.';
         $message .= '</p>';
-        $message .= '<p class="text-center"><a class = "submission-reset-link" href="../explore.php">Keep Exploring</a></p>';
+        $message .= '<p class="text-center"><a class = "submission-reset-link" href="explore.php">Keep Exploring</a></p>';
         
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //
@@ -852,7 +888,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                     <p class="row imgUpload">Upload a picture of your dorm:
                         <input type="file" name="imgImage" id="imgImage" tabindex="320">
                     </p>
-                    <input id="hdnDormID" name="hdnDormID" type="hidden" value="<?php $dormID ?>">
+                    <input type="hidden" id="hdnDormID" name="hdnDormID" value="<?php print $dormID ?>" />
                     <?php     
                     $i = 0;
                     print '<p><br>Please complete this optional survey.<br>The results will be kept private.</p>';
