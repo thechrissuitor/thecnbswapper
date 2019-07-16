@@ -537,12 +537,18 @@ if (isset($_POST["btnSubmit"])) {
                 $imageIdForUpdate = $imageIdRecord['fnkImageId'];
             }
             
-            $imageUpdateQuery = "UPDATE tblUserImages SET fldImagePath = ? WHERE pmkImageID = " . $imageIdForUpdate;
+            $imageUpdateQuery = "UPDATE tblUserImages SET fldImagePath = ? WHERE pmkImageId = " . $imageIdForUpdate;
             
             //SEND UPDATE QUERY FOR TBLUSERIMAGES
             if ($thisDatabaseWriter->querySecurityOk($imageUpdateQuery)) {
                 $imageUpdateQuery = $thisDatabaseWriter->sanitizeQuery($imageUpdateQuery);
                 $imageUpdateDataRecord = $thisDatabaseWriter->update($imageUpdateQuery, $imageDataRecord);
+            }
+            if (DEBUG) {
+                print '<p>Image Update Query<pre>';
+                $test1 = $thisDatabaseWriter->testSecurityQuery($imageUpdateQuery);
+                print_r($test1);
+                print '</pre></p>';
             }
             
             //UPDATE QUERY FOR TBLDORMS
@@ -556,6 +562,12 @@ if (isset($_POST["btnSubmit"])) {
                 $dormUpdateQuery = $thisDatabaseWriter->sanitizeQuery($dormUpdateQuery);
                 $dormDataRecord = $thisDatabaseWriter->update($dormUpdateQuery, $dormDataRecord);
             }
+            if (DEBUG) {
+                print '<p>Dorm Update Query<pre>';
+                $test2 = $thisDatabaseWriter->testSecurityQuery($dormUpdateQuery);
+                print_r($test2);
+                print '</pre></p>';
+            }
         }
         
         
@@ -564,6 +576,7 @@ if (isset($_POST["btnSubmit"])) {
             //$studentSurveyUpdateQuery = 'UPDATE tblStudentSurvey SET pfkInput = ? WHERE pfkStudentId = ?;';
 
             // use a for-loop to get the correct number of question marks
+            /*
             if (is_array($survey)) {
                 foreach ($survey as $survey) {
                     if($survey['fldDefaultValue'] == 1){
@@ -571,22 +584,33 @@ if (isset($_POST["btnSubmit"])) {
                     }
                 }
             }
+            */
             
             // for every survey marked true, add the student id and survey to the data array,
             // that way the data can match the corresponding question marks.
+            $count = 0;
             if (is_array($survey)) {
                 foreach ($survey as $choice) {
                     if($choice['fldDefaultValue'] == 1){
                         $studentSurveyData[] = $choice['pmkInput'];
                         $studentSurveyData[] = $stuId;
+                        $studentSurveyUpdateQuery .= ' UPDATE tblStudentSurvey SET pfkInput = ? WHERE pfkStudentId = ? ;';
+                        $count++;
                     }
                 }
             }
             //SEND UPDATE QUERY
-            if ($thisDatabaseWriter->querySecurityOk($studentSurveyUpdateQuery)) {
+            if ($thisDatabaseWriter->querySecurityOk($studentSurveyUpdateQuery, $count, 0, 0, 0, $count)) {
                 $studentSurveyUpdateQuery = $thisDatabaseWriter->sanitizeQuery($studentSurveyUpdateQuery);
                 $studentSurveyData = $thisDatabaseWriter->update($studentSurveyUpdateQuery, $studentSurveyData);
             }
+            if (DEBUG) {
+                print '<p>Survey Update Query<pre>';
+                $test3 = $thisDatabaseWriter->testSecurityQuery($studentSurveyUpdateQuery, $count, 0, 0, 0, $count);
+                print_r($test3);
+                print '</pre></p>';
+            }
+
         } else { // if an insert
             
             $studentSurveyInsertQuery = 'INSERT IGNORE INTO tblStudentSurvey (pfkStudentId, pfkInput)';
