@@ -533,6 +533,10 @@ if (isset($_POST["btnSubmit"])) {
             
             // grab image id
             $getImageIdForUpdateQuery = "SELECT fnkImageId FROM tblDorms WHERE fnkStudentId = " . $stuId;
+            if ($thisDatabaseReader->querySecurityOk($getImageIdForUpdateQuery)) {
+                $getImageIdForUpdateQuery = $thisDatabaseReader->sanitizeQuery($getImageIdForUpdateQuery);
+                $ImageIdRecords = $thisDatabaseReader->select($getImageIdForUpdateQuery, '');
+            }
             foreach($ImageIdRecords as $imageIdRecord){
                 $imageIdForUpdate = $imageIdRecord['fnkImageId'];
             }
@@ -554,7 +558,7 @@ if (isset($_POST["btnSubmit"])) {
             //UPDATE QUERY FOR TBLDORMS
             $dormUpdateQuery = "UPDATE tblDorms SET fnkHallId = ?, ";
             $dormUpdateQuery .= "fldRoomNumber = ?, fldRoommates = ?, ";
-            $dormUpdateQuery .= "fldDormStyle = ?, fldDescription = ?, fnkImageId = ? ";
+            $dormUpdateQuery .= "fldDormStyle = ?, fldDescription = ? ";
             $dormUpdateQuery .= "WHERE pmkUserDormId = " . $hiddenDormID;
 
             //SEND UPDATE QUERY FOR TBLDORMS
@@ -566,6 +570,26 @@ if (isset($_POST["btnSubmit"])) {
                 print '<p>Dorm Update Query<pre>';
                 $test2 = $thisDatabaseWriter->testSecurityQuery($dormUpdateQuery);
                 print_r($test2);
+                print '</pre></p>';
+            }
+            
+            //UPDATE QUERY FOR TBLSTUDENTINFO
+            $studentUpdateQuery = "UPDATE tblStudentInfo SET fldFirstName = ?, ";
+            $studentUpdateQuery .= "fldLastName = ?, fldEmail = ?, ";
+            $studentUpdateQuery .= "fldClassStanding = ? ";
+            $studentUpdateQuery .= "WHERE fnkDormId = " . $hiddenDormID;
+            
+            //SEND INSERT QUERY FOR TBLSTUDNETINFO
+            if ($thisDatabaseWriter->querySecurityOk($studentUpdateQuery)) {
+                $studentUpdateQuery = $thisDatabaseWriter->sanitizeQuery($studentUpdateQuery);
+                $studentDataRecord = $thisDatabaseWriter->update($studentUpdateQuery, $studentDataRecord);
+            }
+            if (DEBUG) {
+                print '<p>Student Info Update Query<pre>';
+                $test3 = $thisDatabaseWriter->testSecurityQuery($studentUpdateQuery);
+                print_r($test3);
+                print '<p>Student Data Record</p>';
+                print_r($studentDataRecord);
                 print '</pre></p>';
             }
         }
@@ -606,8 +630,8 @@ if (isset($_POST["btnSubmit"])) {
             }
             if (DEBUG) {
                 print '<p>Survey Update Query<pre>';
-                $test3 = $thisDatabaseWriter->testSecurityQuery($studentSurveyUpdateQuery, $count, 0, 0, 0, $count);
-                print_r($test3);
+                $test4 = $thisDatabaseWriter->testSecurityQuery($studentSurveyUpdateQuery, $count, 0, 0, 0, $count);
+                print_r($test4);
                 print '</pre></p>';
             }
 
