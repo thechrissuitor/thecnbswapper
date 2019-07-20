@@ -439,6 +439,7 @@ if (isset($_POST["btnSubmit"])) {
         
         // array used to hold form values that will be saved to the database
         $studentDataRecord = array(); 
+        $studentDataRecord2 = array();
         $dormDataRecord = array(); 
         $imageDataRecord = array();
         
@@ -448,6 +449,10 @@ if (isset($_POST["btnSubmit"])) {
         $studentDataRecord[] = $email; 
         $studentDataRecord[] = $classStanding;
         $studentDataRecord[] = $hidden;
+        $studentDataRecord2[] = $firstName;
+        $studentDataRecord2[] = $lastName;
+        $studentDataRecord2[] = $email; 
+        $studentDataRecord2[] = $classStanding;
         $dormDataRecord[] = $hall;
         $dormDataRecord[] = $roomNumber;
         $dormDataRecord[] = $roommates;
@@ -582,14 +587,17 @@ if (isset($_POST["btnSubmit"])) {
             //SEND INSERT QUERY FOR TBLSTUDNETINFO
             if ($thisDatabaseWriter->querySecurityOk($studentUpdateQuery)) {
                 $studentUpdateQuery = $thisDatabaseWriter->sanitizeQuery($studentUpdateQuery);
-                $studentDataRecord = $thisDatabaseWriter->update($studentUpdateQuery, $studentDataRecord);
+                $studentDataRecord2 = $thisDatabaseWriter->update($studentUpdateQuery, $studentDataRecord2);
             }
             if (DEBUG) {
-                print '<p>Student Info Update Query<pre>';
-                $test3 = $thisDatabaseWriter->testSecurityQuery($studentUpdateQuery);
+                print '<p>Student Update Query<pre>';
+                $test3 = $thisDatabaseWriter->testSecurityQuery($dormUpdateQuery);
                 print_r($test3);
-                print '<p>Student Data Record</p>';
-                print_r($studentDataRecord);
+                print '</pre></p>';
+            }
+            if (DEBUG) {
+                print '<p>Student Data Record<pre>';
+                print_r($studentDataRecord2);
                 print '</pre></p>';
             }
         }
