@@ -90,7 +90,13 @@ nav ol li a{
 }
 
 .activePage{
-    text-shadow: -.06em black;
+    color: black;
+    text-shadow: 1px 1px 0 #ECFF00, 2px 2px 0 #000, 3px 3px 0 #000, 4px 4px 0 #000, 5px 5px 0 #000, 6px 6px 0 #000
+}
+
+nav .nav-link:hover{
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 0.5em;
 }
 /*****************     End NAV         *****************************/
 
@@ -274,6 +280,10 @@ footer{
 
 .loveLink{
     margin: 10% 1% 0% !important;
+}
+
+.adminButton{
+    margin: s.5%;
 }
 /*****************     End EXPLORE                ****************************/   
 
