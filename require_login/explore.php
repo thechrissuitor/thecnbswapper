@@ -40,11 +40,11 @@ if ($thisDatabaseReader->querySecurityOk($query, 0)) {
                         print '</article>';
                         if($isAdmin){
                             //ADMIN DELETE BUTTON
-                            print '<p class= "float-right"><a  class = "btn btn-primary" role = "button" href="delete.php?dormId=';
+                            print '<p class= "float-right adminButton"><a  class = "btn btn-primary" role = "button" href="delete.php?dormId=';
                             print $dormId;
                             print '">DELETE</a></p>';
                             //ADMIN UPDATE BUTTON
-                            print '<p class= "float-right"><a  class = "btn btn-primary" role = "button" href="apply.php?dormId=';
+                            print '<p class= "float-right adminButton"><a  class = "btn btn-primary" role = "button" href="apply.php?dormId=';
                             print $dormId;
                             print '">UPDATE</a></p>';
                         }

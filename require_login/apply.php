@@ -598,7 +598,7 @@ if (isset($_POST["btnSubmit"])) {
         $message .= ' Please browse the market for rooms that interest you.';
         $message .= ' You will be notified when a match is found.';
         $message .= '</p>';
-        $message .= '<p class="text-center"><a class = "submission-reset-link" href="../explore.php">Keep Exploring</a></p>';
+        $message .= '<p class="text-center"><a class = "submission-reset-link" href="explore.php">Keep Exploring</a></p>';
         
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //
